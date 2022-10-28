@@ -1,20 +1,11 @@
 package com.vladimirorlov9.cryptocurrency.ui
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.vladimirorlov9.cryptocurrency.data.api.CoinMarketCapApi
-import com.vladimirorlov9.cryptocurrency.data.repository.CurrenciesRepositoryImpl
 import com.vladimirorlov9.cryptocurrency.databinding.FragmentCurrenciesBinding
-import com.vladimirorlov9.cryptocurrency.domain.usecase.GetLatestCryptoStatusUseCase
-import com.vladimirorlov9.data.BuildConfig
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**

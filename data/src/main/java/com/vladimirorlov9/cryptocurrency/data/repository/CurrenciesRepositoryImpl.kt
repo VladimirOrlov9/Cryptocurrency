@@ -5,7 +5,6 @@ import com.vladimirorlov9.cryptocurrency.data.api.models.LatestCryptoStatus
 import com.vladimirorlov9.cryptocurrency.domain.models.CryptoPrice
 import com.vladimirorlov9.cryptocurrency.domain.models.CurrenciesStatus
 import com.vladimirorlov9.cryptocurrency.domain.repository.CurrenciesRepository
-import kotlinx.coroutines.*
 
 class CurrenciesRepositoryImpl(private val currenciesApiInterface: CurrenciesApiInterface): CurrenciesRepository {
 
