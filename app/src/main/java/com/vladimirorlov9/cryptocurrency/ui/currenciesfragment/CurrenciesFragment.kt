@@ -1,11 +1,17 @@
-package com.vladimirorlov9.cryptocurrency.ui
+package com.vladimirorlov9.cryptocurrency.ui.currenciesfragment
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.vladimirorlov9.cryptocurrency.databinding.FragmentCurrenciesBinding
+import com.vladimirorlov9.cryptocurrency.ui.app.App
+import com.vladimirorlov9.cryptocurrency.ui.currenciesfragment.recycler.CurrenciesListAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
@@ -29,21 +35,15 @@ class CurrenciesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.saveButton.setOnClickListener {
-            val name = binding.userNameEditText.text.toString()
-            vm.saveText(name)
-        }
-
-        binding.readButton.setOnClickListener {
-            vm.loadText()
-        }
-
-        vm.resultLiveData.observe(viewLifecycleOwner) {
-            binding.userNameTextView.text = it
-        }
-
         vm.latestCryptoLD.observe(viewLifecycleOwner) {
-            binding.userNameTextView.text = it.toString()
+            val layoutManager = LinearLayoutManager(
+                requireActivity().applicationContext
+            )
+            binding.currenciesRecycler.layoutManager = layoutManager
+
+            val adapter = CurrenciesListAdapter()
+            adapter.submitList(it.prices)
+            binding.currenciesRecycler.adapter = adapter
         }
     }
 
