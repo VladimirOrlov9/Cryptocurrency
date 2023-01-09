@@ -52,7 +52,7 @@ class CurrenciesFragment : Fragment() {
         }
 
         vm.latestCryptoLD.observe(viewLifecycleOwner) {
-            binding.userNameTextView.text = it.toString()
+            binding.userNameTextView.text = it.serverCode.toString()
         }
     }
 

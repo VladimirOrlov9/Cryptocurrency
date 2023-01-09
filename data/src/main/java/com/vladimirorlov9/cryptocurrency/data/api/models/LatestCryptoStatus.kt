@@ -1,7 +1,8 @@
 package com.vladimirorlov9.cryptocurrency.data.api.models
 
 data class LatestCryptoStatus(
-    val cryptos: List<Crypto>
+    val serverCode: Int,
+    val cryptos: List<Crypto>?
 )
 
 data class Crypto(

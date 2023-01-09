@@ -14,7 +14,9 @@ class CurrenciesRepositoryImpl(private val currenciesApiInterface: CurrenciesApi
     }
 
     private fun LatestCryptoStatus.mapToCurrenciesStatus(): CurrenciesStatus {
-        return CurrenciesStatus(this.cryptos.map {
+        return CurrenciesStatus(
+            this.serverCode,
+            this.cryptos?.map {
             CryptoPrice(
                 name = it.name,
                 price = it.price

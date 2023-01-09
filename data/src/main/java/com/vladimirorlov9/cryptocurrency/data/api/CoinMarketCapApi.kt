@@ -24,19 +24,26 @@ class CoinMarketCapApi : CurrenciesApiInterface {
             apiKey = BuildConfig.COIN_MARKET_CAP_API_KEY
         )
         val response = call.execute()
-        if (response.code() == 200) {
-            return mapToLatestCryptoStatus(response.body() ?: return LatestCryptoStatus(listOf()))
-        }
-
-        return LatestCryptoStatus(listOf())
+        return mapToLatestCryptoStatus(
+            response.code(),
+            response.body()
+        )
     }
 
-    private fun mapToLatestCryptoStatus(coinMarketCapStatus: CoinMarketCapStatus): LatestCryptoStatus {
+    private fun mapToLatestCryptoStatus(
+        serverCode: Int,
+        coinMarketCapStatus: CoinMarketCapStatus?
+    ): LatestCryptoStatus {
         return LatestCryptoStatus(
-            cryptos = coinMarketCapStatus.data.map { Crypto(
-                name = it.name,
-                price = it.quote.USD.price
-            ) }
+            serverCode = serverCode,
+            coinMarketCapStatus?.let {
+                coinMarketCapStatus.data.map {
+                    Crypto(
+                        name = it.name,
+                        price = it.quote.USD.price
+                    )
+                }
+            }
         )
     }
 }
