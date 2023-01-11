@@ -8,8 +8,6 @@ val appModule = module {
 
     viewModel<CurrenciesViewModel> {
         CurrenciesViewModel(
-            getUserNameUseCase = get(),
-            saveUserNameUseCase = get(),
             getLatestCryptoStatusUseCase = get()
         )
     }

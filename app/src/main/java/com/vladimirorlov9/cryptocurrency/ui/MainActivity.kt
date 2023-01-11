@@ -9,14 +9,94 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.fragment.NavHostFragment
 import com.vladimirorlov9.cryptocurrency.R
 import com.vladimirorlov9.cryptocurrency.databinding.ActivityMainBinding
+import com.vladimirorlov9.cryptocurrency.domain.models.CryptoPrice
+import org.koin.androidx.compose.getViewModel
 
 /**
  * [MainActivity] is the main activity, which contains FragmentContainer.
  */
-class MainActivity : AppCompatActivity() {
+class MainActivity : ComponentActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        setContent {
+
+            Surface(
+                modifier = Modifier.fillMaxSize(),
+                color = MaterialTheme.colorScheme.background
+            ) {
+                CurrenciesList()
+            }
+        }
+
+
+
+
+    }
+}
+
+@Composable
+fun CurrenciesList(
+    currViewModel: CurrenciesViewModel = getViewModel()
+) {
+    val latest by currViewModel.latestCryptoLD.observeAsState()
+
+    val currencies: List<CryptoPrice>? = latest?.prices
+    currencies?.let {
+        LazyColumn {
+            items(currencies) { curr ->
+                CurrencyRow(item = curr)
+            }
+        }
+    }
+}
+
+@Composable
+fun CurrencyRow(item: CryptoPrice) {
+    Row(
+        modifier = Modifier
+            .padding(all = 8.dp)
+            .fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(text = item.name)
+        Spacer(modifier = Modifier.size(6.dp))
+        Text(text = item.price.toString(), textAlign = TextAlign.End)
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun MainActivityPreview() {
+    val testPrice = CryptoPrice(
+        name = "Govnoid",
+        price = 22.8
+    )
+    CurrencyRow(
+        item = testPrice
+    )
+}
+
+class MainActivity_old : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
@@ -30,7 +110,8 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.toolbar)
 
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_main) as NavHostFragment
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_main) as NavHostFragment
         val navController = navHostFragment.navController
 
         appBarConfiguration = AppBarConfiguration(navController.graph)

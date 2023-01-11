@@ -13,8 +13,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class CurrenciesViewModel(
-    private val saveUserNameUseCase: SaveUserNameUseCase,
-    private val getUserNameUseCase: GetUserNameUseCase,
     private val getLatestCryptoStatusUseCase: GetLatestCryptoStatusUseCase
 ): ViewModel() {
 
@@ -38,14 +36,14 @@ class CurrenciesViewModel(
         }
     }
 
-    fun saveText(text: String) {
-        val userNameParam = UserName(name = text)
-        val result = saveUserNameUseCase.execute(userNameParam)
-        _resultLiveData.value = "Success = $result"
-    }
-
-    fun loadText() {
-        val userName = getUserNameUseCase.execute()
-        _resultLiveData.value = "Result = ${userName.name}"
-    }
+//    fun saveText(text: String) {
+//        val userNameParam = UserName(name = text)
+//        val result = saveUserNameUseCase.execute(userNameParam)
+//        _resultLiveData.value = "Success = $result"
+//    }
+//
+//    fun loadText() {
+//        val userName = getUserNameUseCase.execute()
+//        _resultLiveData.value = "Result = ${userName.name}"
+//    }
 }

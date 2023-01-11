@@ -38,14 +38,14 @@ class CurrenciesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.saveButton.setOnClickListener {
-            val name = binding.userNameEditText.text.toString()
-            vm.saveText(name)
-        }
-
-        binding.readButton.setOnClickListener {
-            vm.loadText()
-        }
+//        binding.saveButton.setOnClickListener {
+//            val name = binding.userNameEditText.text.toString()
+//            vm.saveText(name)
+//        }
+//
+//        binding.readButton.setOnClickListener {
+//            vm.loadText()
+//        }
 
         vm.resultLiveData.observe(viewLifecycleOwner) {
             binding.userNameTextView.text = it
