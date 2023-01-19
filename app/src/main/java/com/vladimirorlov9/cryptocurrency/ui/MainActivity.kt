@@ -34,69 +34,8 @@ import org.koin.androidx.compose.getViewModel
 /**
  * [MainActivity] is the main activity, which contains FragmentContainer.
  */
-class MainActivity : ComponentActivity() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        setContent {
-
-            Surface(
-                modifier = Modifier.fillMaxSize(),
-                color = MaterialTheme.colorScheme.background
-            ) {
-                CurrenciesList()
-            }
-        }
-
-
-
-
-    }
-}
-
-@Composable
-fun CurrenciesList(
-    currViewModel: CurrenciesViewModel = getViewModel()
-) {
-    val latest by currViewModel.latestCryptoLD.observeAsState()
-
-    val currencies: List<CryptoPrice>? = latest?.prices
-    currencies?.let {
-        LazyColumn {
-            items(currencies) { curr ->
-                CurrencyRow(item = curr)
-            }
-        }
-    }
-}
-
-@Composable
-fun CurrencyRow(item: CryptoPrice) {
-    Row(
-        modifier = Modifier
-            .padding(all = 8.dp)
-            .fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Text(text = item.name)
-        Spacer(modifier = Modifier.size(6.dp))
-        Text(text = item.price.toString(), textAlign = TextAlign.End)
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun MainActivityPreview() {
-    val testPrice = CryptoPrice(
-        name = "Govnoid",
-        price = 22.8
-    )
-    CurrencyRow(
-        item = testPrice
-    )
-}
-
-class MainActivity_old : AppCompatActivity() {
+class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding

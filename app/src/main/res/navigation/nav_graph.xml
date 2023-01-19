@@ -7,7 +7,16 @@
 
     <fragment
         android:id="@+id/CurrenciesFragment"
-        android:name="com.vladimirorlov9.cryptocurrency.ui.CurrenciesFragment"
+        android:name="com.vladimirorlov9.cryptocurrency.ui.overview.OverviewFragment"
         android:label="@string/currenciesfragment_label"
-        tools:layout="@layout/fragment_currencies"/>
+        tools:layout="@layout/fragment_overview">
+        <action
+            android:id="@+id/action_CurrenciesFragment_to_cryptoDetailsFragment"
+            app:destination="@id/cryptoDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/cryptoDetailsFragment"
+        android:name="com.vladimirorlov9.cryptocurrency.ui.cryptodetails.CryptoDetailsFragment"
+        android:label="@string/details"
+        tools:layout="@layout/fragment_crypto_details" />
 </navigation>
