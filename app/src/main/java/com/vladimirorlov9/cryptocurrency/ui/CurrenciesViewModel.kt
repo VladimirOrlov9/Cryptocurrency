@@ -6,14 +6,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.vladimirorlov9.cryptocurrency.domain.models.CurrenciesStatus
 import com.vladimirorlov9.cryptocurrency.domain.models.UserName
-import com.vladimirorlov9.cryptocurrency.domain.usecase.GetLatestCryptoStatusUseCase
-import com.vladimirorlov9.cryptocurrency.domain.usecase.GetUserNameUseCase
-import com.vladimirorlov9.cryptocurrency.domain.usecase.SaveUserNameUseCase
+import com.vladimirorlov9.cryptocurrency.domain.usecase.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class CurrenciesViewModel(
-    private val getLatestCryptoStatusUseCase: GetLatestCryptoStatusUseCase
+    private val getLatestCryptoStatusUseCase: GetLatestCryptoStatusUseCase,
+    private val getSpecStatusUseCase: GetSpecStatusUseCase,
+    private val finishOnboardingUseCase: FinishOnboardingUseCase
 ): ViewModel() {
 
     init {
@@ -22,6 +22,9 @@ class CurrenciesViewModel(
 
     private val _resultLiveData = MutableLiveData<String>()
     val resultLiveData: LiveData<String> = _resultLiveData
+
+    private val _specStatusLD = MutableLiveData<Boolean>()
+    val specStatusLD: LiveData<Boolean> = _specStatusLD
 
     private val _latestCryptoLD = MutableLiveData<CurrenciesStatus>()
     val latestCryptoLD: LiveData<CurrenciesStatus> = _latestCryptoLD
@@ -36,14 +39,20 @@ class CurrenciesViewModel(
         }
     }
 
-//    fun saveText(text: String) {
-//        val userNameParam = UserName(name = text)
-//        val result = saveUserNameUseCase.execute(userNameParam)
-//        _resultLiveData.value = "Success = $result"
-//    }
-//
-//    fun loadText() {
-//        val userName = getUserNameUseCase.execute()
-//        _resultLiveData.value = "Result = ${userName.name}"
-//    }
+    fun getSpecStatus(specName: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = getSpecStatusUseCase.execute(specName)
+
+            launch(Dispatchers.Main) {
+                _specStatusLD.value = result
+            }
+        }
+    }
+
+    fun finishOnboarding(specName: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            finishOnboardingUseCase.execute(specName)
+        }
+    }
+
 }

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/CurrenciesFragment">
+    app:startDestination="@id/onboardingFragment">
 
     <fragment
         android:id="@+id/CurrenciesFragment"
@@ -19,4 +19,15 @@
         android:name="com.vladimirorlov9.cryptocurrency.ui.cryptodetails.CryptoDetailsFragment"
         android:label="@string/details"
         tools:layout="@layout/fragment_crypto_details" />
+    <fragment
+        android:id="@+id/onboardingFragment"
+        android:name="com.vladimirorlov9.cryptocurrency.ui.onboarding.OnboardingFragment"
+        android:label="fragment_onboarding"
+        tools:layout="@layout/fragment_onboarding" >
+        <action
+            android:id="@+id/action_onboardingFragment_to_CurrenciesFragment"
+            app:destination="@id/CurrenciesFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/nav_graph" />
+    </fragment>
 </navigation>
