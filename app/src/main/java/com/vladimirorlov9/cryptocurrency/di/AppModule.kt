@@ -10,7 +10,8 @@ val appModule = module {
         CurrenciesViewModel(
             getLatestCryptoStatusUseCase = get(),
             getSpecStatusUseCase = get(),
-            finishOnboardingUseCase = get()
+            finishOnboardingUseCase = get(),
+            signUpUseCase = get()
         )
     }
 }

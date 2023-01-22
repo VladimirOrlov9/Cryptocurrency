@@ -1,9 +1,8 @@
 package com.vladimirorlov9.cryptocurrency.domain.repository
 
-import com.vladimirorlov9.cryptocurrency.domain.models.UserName
+import com.vladimirorlov9.cryptocurrency.domain.models.NewUser
 
 interface UserRepository {
 
-    fun save(userName: UserName)
-    fun get(): UserName
+    suspend fun signUp(user: NewUser): Boolean
 }

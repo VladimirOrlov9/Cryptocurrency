@@ -103,9 +103,8 @@ class OnboardingFragment : Fragment() {
             binding.pager.setCurrentItem(pagesNum - 1, true)
         }
         binding.finishButton.setOnClickListener {
-            finishOnboard()
-//            vm.finishOnboarding(SPECIFICATION_ONBOARDING)
-            findNavController().navigate(R.id.action_onboardingFragment_to_CurrenciesFragment)
+//            finishOnboard()
+            findNavController().navigate(R.id.action_onboardingFragment_to_signUpFragment)
         }
 
     }
