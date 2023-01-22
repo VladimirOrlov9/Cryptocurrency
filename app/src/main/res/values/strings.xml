@@ -58,4 +58,8 @@
     <string name="phone_number">Phone Number</string>
     <string name="password">Password</string>
     <string name="sign_up">Sign Up</string>
+    <string name="welcome_back">Welcome Back</string>
+    <string name="username_email">Username/Email</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="login">Login</string>
 </resources>

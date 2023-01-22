@@ -27,8 +27,8 @@ class CurrenciesViewModel(
     private val _specStatusLD = MutableLiveData<Boolean>()
     val specStatusLD: LiveData<Boolean> = _specStatusLD
 
-    private val _signUpResultLD = MutableLiveData<Boolean>()
-    val signUpResultLD: LiveData<Boolean> = _signUpResultLD
+    private val _signUpResultLD = MutableLiveData<Long?>()
+    val signUpResultLD: LiveData<Long?> = _signUpResultLD
 
     private val _latestCryptoLD = MutableLiveData<CurrenciesStatus>()
     val latestCryptoLD: LiveData<CurrenciesStatus> = _latestCryptoLD

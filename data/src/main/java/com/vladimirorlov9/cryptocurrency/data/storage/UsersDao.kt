@@ -11,9 +11,9 @@ interface UsersDao: UserRepository {
 
     // TODO change return type to Long? and save uid in sharedPref,
     //  such user already exists if return is null
-    override suspend fun signUp(user: NewUser): Boolean {
+    override suspend fun signUp(user: NewUser): Long? {
         val userEntity = mapNewUserToNewUserEntity(user)
-        return createNewUser(userEntity) != null
+        return createNewUser(userEntity)
     }
 
     fun mapNewUserToNewUserEntity(user: NewUser): NewUserEntity {

@@ -40,6 +40,22 @@
         tools:layout="@layout/fragment_sign_up" >
         <action
             android:id="@+id/action_signUpFragment_to_CurrenciesFragment"
-            app:destination="@id/CurrenciesFragment" />
+            app:destination="@id/CurrenciesFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/nav_graph" />
+        <action
+            android:id="@+id/action_signUpFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.vladimirorlov9.cryptocurrency.ui.login.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/nav_graph" />
     </fragment>
 </navigation>

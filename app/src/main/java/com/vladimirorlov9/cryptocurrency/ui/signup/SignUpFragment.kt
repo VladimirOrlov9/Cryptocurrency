@@ -1,16 +1,17 @@
 package com.vladimirorlov9.cryptocurrency.ui.signup
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.Toolbar
 import androidx.navigation.fragment.findNavController
 import com.vladimirorlov9.cryptocurrency.R
 import com.vladimirorlov9.cryptocurrency.databinding.FragmentSignUpBinding
 import com.vladimirorlov9.cryptocurrency.ui.CurrenciesViewModel
+import com.vladimirorlov9.cryptocurrency.ui.onboarding.SPECIFICATION_ONBOARDING
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
@@ -20,6 +21,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  */
 
 const val TAG = "SignUpFragment"
+const val PREF_CURRENT_UID = "current_uid"
 
 class SignUpFragment : Fragment() {
 
@@ -39,7 +41,6 @@ class SignUpFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
 
         binding.signupButton.setOnClickListener {
             val firstName = binding.firstnameEdittext.text.toString()
@@ -67,13 +68,36 @@ class SignUpFragment : Fragment() {
             }
         }
 
+        binding.logInButton.setOnClickListener {
+            findNavController().navigate(R.id.action_signUpFragment_to_loginFragment)
+        }
+
         vm.signUpResultLD.observe(viewLifecycleOwner) {
-            if (it) {
+            if (it != null) {
+                saveUidToSharedPrefs(it)
+                finishOnboard()
                 findNavController().navigate(R.id.action_signUpFragment_to_CurrenciesFragment)
             } else {
                 unlockAllFields()
-                Log.e(TAG, "Sign Up error from LD.")
+                Log.e(TAG, "Such user already exist.")
+                // TODO add output of this error to user
             }
+        }
+    }
+
+    private fun finishOnboard() {
+        val pref = requireActivity().getPreferences(Context.MODE_PRIVATE)
+        with (pref.edit()) {
+            putBoolean(SPECIFICATION_ONBOARDING, true)
+            apply()
+        }
+    }
+
+    private fun saveUidToSharedPrefs(uid: Long) {
+        val pref = requireActivity().getPreferences(Context.MODE_PRIVATE)
+        with (pref.edit()) {
+            putLong(PREF_CURRENT_UID, uid)
+            apply()
         }
     }
 

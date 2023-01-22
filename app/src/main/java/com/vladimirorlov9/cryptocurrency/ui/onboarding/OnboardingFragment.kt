@@ -40,13 +40,6 @@ class OnboardingFragment : Fragment() {
             .getBoolean(SPECIFICATION_ONBOARDING, false)
         if (spec)
             findNavController().navigate(R.id.action_onboardingFragment_to_CurrenciesFragment)
-
-//        vm.getSpecStatus(SPECIFICATION_ONBOARDING)
-//        vm.specStatusLD.observe(this) {
-//            if (it) {
-//                findNavController().navigate(R.id.action_onboardingFragment_to_CurrenciesFragment)
-//            }
-//        }
     }
 
     override fun onCreateView(
@@ -107,13 +100,5 @@ class OnboardingFragment : Fragment() {
             findNavController().navigate(R.id.action_onboardingFragment_to_signUpFragment)
         }
 
-    }
-
-    private fun finishOnboard() {
-        val pref = requireActivity().getPreferences(Context.MODE_PRIVATE)
-        with (pref.edit()) {
-            putBoolean(SPECIFICATION_ONBOARDING, true)
-            apply()
-        }
     }
 }
