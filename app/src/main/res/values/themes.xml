@@ -6,4 +6,8 @@
     </style>
 
     <style name="Theme.CryptoCurrency" parent="Base.Theme.CryptoCurrency" />
+
+    <style name="ShapeAppearanceOverlay.App.CornerSize6Percent" parent="">
+        <item name="cornerSize">6%</item>
+    </style>
 </resources>

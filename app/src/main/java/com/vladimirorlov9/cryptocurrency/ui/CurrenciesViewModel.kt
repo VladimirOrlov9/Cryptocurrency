@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.vladimirorlov9.cryptocurrency.domain.models.CoinInStock
 import com.vladimirorlov9.cryptocurrency.domain.models.CurrenciesStatus
+import com.vladimirorlov9.cryptocurrency.domain.models.NFTsInStock
 import com.vladimirorlov9.cryptocurrency.domain.models.NewUser
 import com.vladimirorlov9.cryptocurrency.domain.usecase.*
 import kotlinx.coroutines.Dispatchers
@@ -36,6 +37,9 @@ class CurrenciesViewModel(
 
     private val _stockTokensLD = MutableLiveData<List<CoinInStock>>()
     val stockTokensLD: LiveData<List<CoinInStock>> = _stockTokensLD
+
+    private val _stockNFTsLD = MutableLiveData<List<NFTsInStock>>()
+    val stockNFTsLD: LiveData<List<NFTsInStock>> = _stockNFTsLD
 
     fun loadLatestCurrencies() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -89,6 +93,10 @@ class CurrenciesViewModel(
     }
 
     fun getStockCoinsStatus(userId: Long) {
+        // TODO after table creation add this block
+    }
+
+    fun getStockNFTsStatus(userId: Long) {
         // TODO after table creation add this block
     }
 
