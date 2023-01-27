@@ -5,7 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.tabs.TabLayoutMediator
 import com.vladimirorlov9.cryptocurrency.R
 import com.vladimirorlov9.cryptocurrency.databinding.FragmentHomeBinding
 import com.vladimirorlov9.cryptocurrency.ui.MainActivity
@@ -19,6 +19,8 @@ class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
+
+    private lateinit var pagerAdapter: HomePagerAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,7 +37,15 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        pagerAdapter = HomePagerAdapter(this)
+        binding.pager.adapter = pagerAdapter
 
+        TabLayoutMediator(binding.homeTabs, binding.pager) { tab, position ->
+            if (position == 0)
+                tab.text = resources.getString(R.string.tokens)
+            else
+                tab.text = resources.getString(R.string.nfts)
+        }.attach()
     }
 
 }

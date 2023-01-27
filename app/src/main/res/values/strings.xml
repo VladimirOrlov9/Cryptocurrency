@@ -71,4 +71,6 @@
     <string name="exchange">Exchange</string>
     <string name="buy">Buy</string>
     <string name="receive">Receive</string>
+    <string name="tokens">Tokens</string>
+    <string name="nfts">NFTs</string>
 </resources>
