@@ -9,6 +9,7 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
@@ -26,6 +27,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.vladimirorlov9.cryptocurrency.R
 import com.vladimirorlov9.cryptocurrency.databinding.ActivityMainBinding
 import com.vladimirorlov9.cryptocurrency.domain.models.CryptoPrice
@@ -54,7 +57,17 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
 
         appBarConfiguration = AppBarConfiguration(navController.graph)
+
+        binding.bottomNav.setupWithNavController(navController = navController)
 //        setupActionBarWithNavController(navController, appBarConfiguration)
+    }
+
+
+    fun setBottomNavVisibility(visible: Boolean) {
+        if (visible)
+            findViewById<BottomNavigationView>(R.id.bottom_nav).visibility = View.VISIBLE
+        else
+            findViewById<BottomNavigationView>(R.id.bottom_nav).visibility = View.GONE
     }
 
 //    override fun onCreateOptionsMenu(menu: Menu): Boolean {

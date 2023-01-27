@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.vladimirorlov9.cryptocurrency.domain.models.CoinInStock
 import com.vladimirorlov9.cryptocurrency.domain.models.CurrenciesStatus
 import com.vladimirorlov9.cryptocurrency.domain.models.NewUser
 import com.vladimirorlov9.cryptocurrency.domain.usecase.*
@@ -32,6 +33,9 @@ class CurrenciesViewModel(
 
     private val _latestCryptoLD = MutableLiveData<CurrenciesStatus>()
     val latestCryptoLD: LiveData<CurrenciesStatus> = _latestCryptoLD
+
+    private val _stockTokensLD = MutableLiveData<List<CoinInStock>>()
+    val stockTokensLD: LiveData<List<CoinInStock>> = _stockTokensLD
 
     fun loadLatestCurrencies() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -82,6 +86,10 @@ class CurrenciesViewModel(
                 _signUpResultLD.value = result
             }
         }
+    }
+
+    fun getStockCoinsStatus(userId: Long) {
+        // TODO after table creation add this block
     }
 
 }

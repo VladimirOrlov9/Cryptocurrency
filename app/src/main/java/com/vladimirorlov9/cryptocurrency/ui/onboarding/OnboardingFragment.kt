@@ -39,7 +39,7 @@ class OnboardingFragment : Fragment() {
         val spec = requireActivity().getPreferences(Context.MODE_PRIVATE)
             .getBoolean(SPECIFICATION_ONBOARDING, false)
         if (spec)
-            findNavController().navigate(R.id.action_onboardingFragment_to_CurrenciesFragment)
+            findNavController().navigate(R.id.action_onboardingFragment_to_signUpFragment)
     }
 
     override fun onCreateView(
@@ -96,9 +96,16 @@ class OnboardingFragment : Fragment() {
             binding.pager.setCurrentItem(pagesNum - 1, true)
         }
         binding.finishButton.setOnClickListener {
-//            finishOnboard()
+            finishOnboard()
             findNavController().navigate(R.id.action_onboardingFragment_to_signUpFragment)
         }
+    }
 
+    private fun finishOnboard() {
+        val pref = requireActivity().getPreferences(Context.MODE_PRIVATE)
+        with (pref.edit()) {
+            putBoolean(SPECIFICATION_ONBOARDING, true)
+            apply()
+        }
     }
 }

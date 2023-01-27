@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/homeFragment"
+        android:title="@string/home"
+        android:icon="@drawable/baseline_home_24"/>
+    <item
+        android:id="@+id/swapFragment"
+        android:title="@string/swap"
+        android:icon="@drawable/baseline_swap_horiz_24"/>
+    <item
+        android:id="@+id/p2PFragment"
+        android:title="@string/p2p"
+        android:icon="@drawable/baseline_people_24"/>
+    <item
+        android:id="@+id/userFragment"
+        android:title="@string/user"
+        android:icon="@drawable/outline_account_circle_24"/>
+</menu>

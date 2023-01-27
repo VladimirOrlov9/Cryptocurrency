@@ -51,7 +51,7 @@ class OverviewAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OverviewViewHolder {
         val itemView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.overview_element, parent, false)
+            .inflate(R.layout.home_tokens_element, parent, false)
 
         return OverviewViewHolder(itemView)
     }

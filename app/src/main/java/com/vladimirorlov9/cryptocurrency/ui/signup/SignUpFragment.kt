@@ -30,6 +30,15 @@ class SignUpFragment : Fragment() {
 
     private val vm by viewModel<CurrenciesViewModel>()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        val spec = requireActivity().getPreferences(Context.MODE_PRIVATE)
+            .getLong(PREF_CURRENT_UID, -1L)
+        if (spec != -1L)
+            findNavController().navigate(R.id.action_signUpFragment_to_homeFragment)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -75,21 +84,13 @@ class SignUpFragment : Fragment() {
         vm.signUpResultLD.observe(viewLifecycleOwner) {
             if (it != null) {
                 saveUidToSharedPrefs(it)
-                finishOnboard()
-                findNavController().navigate(R.id.action_signUpFragment_to_CurrenciesFragment)
+//                finishOnboard()
+                findNavController().navigate(R.id.action_signUpFragment_to_homeFragment)
             } else {
                 unlockAllFields()
                 Log.e(TAG, "Such user already exist.")
                 // TODO add output of this error to user
             }
-        }
-    }
-
-    private fun finishOnboard() {
-        val pref = requireActivity().getPreferences(Context.MODE_PRIVATE)
-        with (pref.edit()) {
-            putBoolean(SPECIFICATION_ONBOARDING, true)
-            apply()
         }
     }
 

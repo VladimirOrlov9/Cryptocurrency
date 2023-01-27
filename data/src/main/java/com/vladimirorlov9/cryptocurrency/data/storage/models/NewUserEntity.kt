@@ -12,5 +12,6 @@ data class NewUserEntity(
     @ColumnInfo val email: String,
     @ColumnInfo val phone: String,
     @ColumnInfo val password: String,
-    @ColumnInfo val registrationDate: Long
+    @ColumnInfo val registrationDate: Long,
+    @ColumnInfo(defaultValue = "1500.0") var balance: Double = 1500.0
 )

@@ -6,15 +6,6 @@
     app:startDestination="@id/onboardingFragment">
 
     <fragment
-        android:id="@+id/CurrenciesFragment"
-        android:name="com.vladimirorlov9.cryptocurrency.ui.overview.OverviewFragment"
-        android:label="@string/currenciesfragment_label"
-        tools:layout="@layout/fragment_overview">
-        <action
-            android:id="@+id/action_CurrenciesFragment_to_cryptoDetailsFragment"
-            app:destination="@id/cryptoDetailsFragment" />
-    </fragment>
-    <fragment
         android:id="@+id/cryptoDetailsFragment"
         android:name="com.vladimirorlov9.cryptocurrency.ui.cryptodetails.CryptoDetailsFragment"
         android:label="@string/details"
@@ -25,13 +16,10 @@
         android:label="fragment_onboarding"
         tools:layout="@layout/fragment_onboarding" >
         <action
-            android:id="@+id/action_onboardingFragment_to_CurrenciesFragment"
-            app:destination="@id/CurrenciesFragment"
+            android:id="@+id/action_onboardingFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment"
             app:launchSingleTop="true"
             app:popUpTo="@id/nav_graph" />
-        <action
-            android:id="@+id/action_onboardingFragment_to_signUpFragment"
-            app:destination="@id/signUpFragment" />
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
@@ -39,13 +27,13 @@
         android:label="fragment_sign_up"
         tools:layout="@layout/fragment_sign_up" >
         <action
-            android:id="@+id/action_signUpFragment_to_CurrenciesFragment"
-            app:destination="@id/CurrenciesFragment"
-            app:launchSingleTop="true"
-            app:popUpTo="@id/nav_graph" />
-        <action
             android:id="@+id/action_signUpFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_signUpFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/nav_graph" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
@@ -58,4 +46,24 @@
             app:launchSingleTop="true"
             app:popUpTo="@id/nav_graph" />
     </fragment>
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.vladimirorlov9.cryptocurrency.ui.home.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/userFragment"
+        android:name="com.vladimirorlov9.cryptocurrency.ui.user.UserFragment"
+        android:label="fragment_user"
+        tools:layout="@layout/fragment_user" />
+    <fragment
+        android:id="@+id/p2PFragment"
+        android:name="com.vladimirorlov9.cryptocurrency.ui.p2p.P2PFragment"
+        android:label="fragment_p2_p"
+        tools:layout="@layout/fragment_p2_p" />
+    <fragment
+        android:id="@+id/swapFragment"
+        android:name="com.vladimirorlov9.cryptocurrency.ui.swap.SwapFragment"
+        android:label="fragment_swap"
+        tools:layout="@layout/fragment_swap" />
 </navigation>
