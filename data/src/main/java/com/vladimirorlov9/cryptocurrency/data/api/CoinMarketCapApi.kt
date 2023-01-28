@@ -8,7 +8,7 @@ import com.vladimirorlov9.data.BuildConfig
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class CoinMarketCapApi : CurrenciesApiInterface {
+class CoinMarketCapApi {
 
     private val retrofit = Retrofit.Builder()
         .baseUrl(CoinMarketCapService.BASE_URL)
@@ -18,7 +18,7 @@ class CoinMarketCapApi : CurrenciesApiInterface {
     private val service: CoinMarketCapService =
         retrofit.create(CoinMarketCapService::class.java)
 
-    override suspend fun getLatest(): LatestCryptoStatus {
+    suspend fun getLatest(): LatestCryptoStatus {
         // TODO move {api_key} from @Query to @Header
         val call = service.getCurrenciesStatus(
             apiKey = BuildConfig.COIN_MARKET_CAP_API_KEY

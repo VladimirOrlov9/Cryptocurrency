@@ -5,10 +5,6 @@ import org.koin.dsl.module
 
 val domainModule = module {
 
-    factory<GetLatestCryptoStatusUseCase> {
-        GetLatestCryptoStatusUseCase(currenciesRepository = get())
-    }
-
     factory<GetSpecStatusUseCase> {
         GetSpecStatusUseCase(specDao = get())
     }
@@ -19,5 +15,11 @@ val domainModule = module {
 
     factory<SignUpUseCase> {
         SignUpUseCase(userRepository = get())
+    }
+
+    factory<LoadAllCoinsUseCase> {
+        LoadAllCoinsUseCase(
+            currenciesRepository = get()
+        )
     }
 }

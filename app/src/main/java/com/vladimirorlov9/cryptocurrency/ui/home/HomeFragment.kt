@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayoutMediator
 import com.vladimirorlov9.cryptocurrency.R
 import com.vladimirorlov9.cryptocurrency.databinding.FragmentHomeBinding
@@ -46,6 +47,21 @@ class HomeFragment : Fragment() {
             else
                 tab.text = resources.getString(R.string.nfts)
         }.attach()
+
+        binding.toolbar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.action_search -> {
+                    findNavController().navigate(R.id.action_homeFragment_to_searchFragment)
+                    true
+                }
+                R.id.action_qr -> {
+
+                    true
+                }
+                else ->
+                    false
+            }
+        }
     }
 
 }

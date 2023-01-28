@@ -4,24 +4,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.vladimirorlov9.cryptocurrency.domain.models.CoinInStock
-import com.vladimirorlov9.cryptocurrency.domain.models.CurrenciesStatus
-import com.vladimirorlov9.cryptocurrency.domain.models.NFTsInStock
-import com.vladimirorlov9.cryptocurrency.domain.models.NewUser
+import com.vladimirorlov9.cryptocurrency.domain.models.*
 import com.vladimirorlov9.cryptocurrency.domain.usecase.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class CurrenciesViewModel(
-    private val getLatestCryptoStatusUseCase: GetLatestCryptoStatusUseCase,
     private val getSpecStatusUseCase: GetSpecStatusUseCase,
     private val finishOnboardingUseCase: FinishOnboardingUseCase,
-    private val signUpUseCase: SignUpUseCase
+    private val signUpUseCase: SignUpUseCase,
+    private val loadAllCoins: LoadAllCoinsUseCase
 ): ViewModel() {
-
-    init {
-        loadLatestCurrencies()
-    }
 
     private val _resultLiveData = MutableLiveData<String>()
     val resultLiveData: LiveData<String> = _resultLiveData
@@ -32,24 +25,14 @@ class CurrenciesViewModel(
     private val _signUpResultLD = MutableLiveData<Long?>()
     val signUpResultLD: LiveData<Long?> = _signUpResultLD
 
-    private val _latestCryptoLD = MutableLiveData<CurrenciesStatus>()
-    val latestCryptoLD: LiveData<CurrenciesStatus> = _latestCryptoLD
-
     private val _stockTokensLD = MutableLiveData<List<CoinInStock>>()
     val stockTokensLD: LiveData<List<CoinInStock>> = _stockTokensLD
 
     private val _stockNFTsLD = MutableLiveData<List<NFTsInStock>>()
     val stockNFTsLD: LiveData<List<NFTsInStock>> = _stockNFTsLD
 
-    fun loadLatestCurrencies() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val result = getLatestCryptoStatusUseCase.execute()
-
-            launch(Dispatchers.Main) {
-                _latestCryptoLD.value = result
-            }
-        }
-    }
+    private val _allCoinsLD = MutableLiveData<List<SearchCoin>>()
+    val allCoinsLD: LiveData<List<SearchCoin>> = _allCoinsLD
 
     fun getSpecStatus(specName: String) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -98,6 +81,16 @@ class CurrenciesViewModel(
 
     fun getStockNFTsStatus(userId: Long) {
         // TODO after table creation add this block
+    }
+
+    fun loadAllCoins() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = loadAllCoins.execute()
+
+            launch(Dispatchers.Main) {
+                _allCoinsLD.value = result
+            }
+        }
     }
 
 }

@@ -1,8 +1,8 @@
 package com.vladimirorlov9.cryptocurrency.domain.repository
 
-import com.vladimirorlov9.cryptocurrency.domain.models.CurrenciesStatus
+import com.vladimirorlov9.cryptocurrency.domain.models.SearchCoin
 
 interface CurrenciesRepository {
 
-    suspend fun getStatus(): CurrenciesStatus
+    suspend fun getCoins(): List<SearchCoin>
 }

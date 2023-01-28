@@ -73,4 +73,6 @@
     <string name="receive">Receive</string>
     <string name="tokens">Tokens</string>
     <string name="nfts">NFTs</string>
+    <string name="search">Search</string>
+    <string name="choose_crypto">Choose Crypto</string>
 </resources>
