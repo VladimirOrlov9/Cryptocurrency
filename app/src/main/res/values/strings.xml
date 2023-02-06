@@ -75,4 +75,9 @@
     <string name="nfts">NFTs</string>
     <string name="search">Search</string>
     <string name="choose_crypto">Choose Crypto</string>
+    <string name="_7d">7D</string>
+    <string name="_1m">1M</string>
+    <string name="_3m">3M</string>
+    <string name="_6m">6M</string>
+    <string name="_1y">1Y</string>
 </resources>
