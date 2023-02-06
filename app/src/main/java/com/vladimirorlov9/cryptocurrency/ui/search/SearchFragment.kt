@@ -33,8 +33,16 @@ class SearchFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         vm.loadAllCoins()
+
+        recyclerAdapter = SearchAdapter { id, name ->
+            // navigate
+            val bundle = Bundle().apply {
+                putString(BUNDLE_COIN_ID, id)
+                putString(BUNDLE_COIN_NAME, name)
+            }
+            findNavController().navigate(R.id.action_searchFragment_to_coinPageFragment, bundle)
+        }
     }
 
     override fun onCreateView(
@@ -50,15 +58,6 @@ class SearchFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.toolbar.setupWithNavController(findNavController())
-
-        recyclerAdapter = SearchAdapter { id, name ->
-            // navigate
-            val bundle = Bundle().apply {
-                putString(BUNDLE_COIN_ID, id)
-                putString(BUNDLE_COIN_NAME, name)
-            }
-            findNavController().navigate(R.id.action_searchFragment_to_coinPageFragment, bundle)
-        }
 
         binding.searchResultsRecycler.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
