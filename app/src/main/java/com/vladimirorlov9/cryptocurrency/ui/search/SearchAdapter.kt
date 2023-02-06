@@ -3,18 +3,22 @@ package com.vladimirorlov9.cryptocurrency.ui.search
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
 import android.widget.TextView
+import androidx.compose.ui.text.toLowerCase
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.vladimirorlov9.cryptocurrency.R
 import com.vladimirorlov9.cryptocurrency.domain.models.SearchCoin
+import com.vladimirorlov9.cryptocurrency.utils.FilterableListAdapter
+import java.util.*
 
 
 class SearchAdapter(
-    private val onClickEvent: (String) -> Unit
-) : ListAdapter<SearchCoin, SearchAdapter.OverviewViewHolder>(DiffCallback()) {
-
+    private val onClickEvent: (String, String) -> Unit
+) : FilterableListAdapter<SearchCoin, SearchAdapter.OverviewViewHolder>(DiffCallback()) {
     inner class OverviewViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         private val coinName: TextView = itemView.findViewById(R.id.coin_name)
@@ -31,7 +35,7 @@ class SearchAdapter(
 
 
             itemView.setOnClickListener {
-                onClickEvent(data.id)
+                onClickEvent(data.id, data.name)
             }
         }
 
@@ -57,5 +61,12 @@ class SearchAdapter(
 
     override fun onBindViewHolder(holder: OverviewViewHolder, position: Int) {
         holder.bind(position)
+    }
+
+    override fun onFilter(list: List<SearchCoin>, constraint: String): List<SearchCoin> {
+        return list.filter {
+            it.name.equals(constraint, ignoreCase = true) ||
+                    it.nameShort.equals(constraint, ignoreCase = true)
+        }
     }
 }

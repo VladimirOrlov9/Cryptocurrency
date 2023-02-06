@@ -22,4 +22,16 @@ val domainModule = module {
             currenciesRepository = get()
         )
     }
+
+    factory<LoadCoinInfoUseCase> {
+        LoadCoinInfoUseCase(
+            currenciesRepository = get()
+        )
+    }
+
+    factory<LoadHistoricalCoinDataUseCase> {
+        LoadHistoricalCoinDataUseCase(
+            currenciesRepository = get()
+        )
+    }
 }

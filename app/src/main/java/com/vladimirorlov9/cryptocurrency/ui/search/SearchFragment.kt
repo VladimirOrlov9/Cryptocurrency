@@ -5,7 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.Toolbar
+import androidx.appcompat.widget.SearchView
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,6 +19,10 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  * Use the [SearchFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
+
+const val BUNDLE_COIN_ID = "coin_id"
+const val BUNDLE_COIN_NAME = "coin_name"
+
 class SearchFragment : Fragment() {
 
     private var _binding: FragmentSearchBinding? = null
@@ -47,9 +51,15 @@ class SearchFragment : Fragment() {
 
         binding.toolbar.setupWithNavController(findNavController())
 
-        recyclerAdapter = SearchAdapter {
+        recyclerAdapter = SearchAdapter { id, name ->
             // navigate
+            val bundle = Bundle().apply {
+                putString(BUNDLE_COIN_ID, id)
+                putString(BUNDLE_COIN_NAME, name)
+            }
+            findNavController().navigate(R.id.action_searchFragment_to_coinPageFragment, bundle)
         }
+
         binding.searchResultsRecycler.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.searchResultsRecycler.adapter = recyclerAdapter
@@ -57,5 +67,18 @@ class SearchFragment : Fragment() {
         vm.allCoinsLD.observe(viewLifecycleOwner) {
             recyclerAdapter.submitList(it)
         }
+
+        binding.searchField.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                recyclerAdapter.filter.filter(query)
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText.isNullOrEmpty())
+                    recyclerAdapter.filter.filter("")
+                return true
+            }
+        })
     }
 }

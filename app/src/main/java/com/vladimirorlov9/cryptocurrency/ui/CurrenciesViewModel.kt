@@ -13,7 +13,9 @@ class CurrenciesViewModel(
     private val getSpecStatusUseCase: GetSpecStatusUseCase,
     private val finishOnboardingUseCase: FinishOnboardingUseCase,
     private val signUpUseCase: SignUpUseCase,
-    private val loadAllCoins: LoadAllCoinsUseCase
+    private val loadAllCoins: LoadAllCoinsUseCase,
+    private val loadCoinInfoUseCase: LoadCoinInfoUseCase,
+    private val loadHistoricalCoinDataUseCase: LoadHistoricalCoinDataUseCase
 ): ViewModel() {
 
     private val _resultLiveData = MutableLiveData<String>()
@@ -33,6 +35,16 @@ class CurrenciesViewModel(
 
     private val _allCoinsLD = MutableLiveData<List<SearchCoin>>()
     val allCoinsLD: LiveData<List<SearchCoin>> = _allCoinsLD
+
+    private val _coinInfoLD = MutableLiveData<CoinInfoModel>()
+    val coinInfoLD: LiveData<CoinInfoModel> = _coinInfoLD
+
+    private val _coinHistoryLD = MutableLiveData<List<CoinHistoryModel>>()
+    val coinHistoryLD: LiveData<List<CoinHistoryModel>> = _coinHistoryLD
+
+    lateinit var latestCryptoPrice: CoinHistoryModel
+
+    val historyMap: MutableMap<Int, List<CoinHistoryModel>> = mutableMapOf()
 
     fun getSpecStatus(specName: String) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -89,6 +101,35 @@ class CurrenciesViewModel(
 
             launch(Dispatchers.Main) {
                 _allCoinsLD.value = result
+            }
+        }
+    }
+
+    fun loadCoinInfo(coinId: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = loadCoinInfoUseCase.execute(coinId)
+
+            launch(Dispatchers.Main) {
+                _coinInfoLD.value = result
+            }
+        }
+    }
+
+    fun loadHistoricalCoinData(coinId: String, days: Int) {
+        if (historyMap.containsKey(days))
+            _coinHistoryLD.value = historyMap[days]
+        else {
+            viewModelScope.launch(Dispatchers.IO) {
+                val result = loadHistoricalCoinDataUseCase.execute(coinId, days).toMutableList()
+                if (!::latestCryptoPrice.isInitialized)
+                    latestCryptoPrice = result.last()
+                else
+                    result.add(latestCryptoPrice)
+                historyMap[days] = result
+
+                launch(Dispatchers.Main) {
+                    _coinHistoryLD.value = result
+                }
             }
         }
     }

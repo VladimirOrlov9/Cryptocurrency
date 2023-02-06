@@ -49,6 +49,9 @@
         <action
             android:id="@+id/action_homeFragment_to_searchFragment"
             app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_coinPageFragment"
+            app:destination="@id/coinPageFragment" />
     </fragment>
     <fragment
         android:id="@+id/userFragment"
@@ -66,5 +69,13 @@
         android:id="@+id/searchFragment"
         android:name="com.vladimirorlov9.cryptocurrency.ui.search.SearchFragment"
         tools:layout="@layout/fragment_search"
-        android:label="@string/choose_crypto"/>
+        android:label="@string/choose_crypto">
+        <action
+            android:id="@+id/action_searchFragment_to_coinPageFragment"
+            app:destination="@id/coinPageFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/coinPageFragment"
+        android:name="com.vladimirorlov9.cryptocurrency.ui.coinpage.CoinPageFragment"
+        tools:layout="@layout/fragment_coin_page" />
 </navigation>

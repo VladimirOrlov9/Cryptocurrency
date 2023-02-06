@@ -11,7 +11,9 @@ val appModule = module {
             getSpecStatusUseCase = get(),
             finishOnboardingUseCase = get(),
             signUpUseCase = get(),
-            loadAllCoins = get()
+            loadAllCoins = get(),
+            loadCoinInfoUseCase = get(),
+            loadHistoricalCoinDataUseCase = get()
         )
     }
 }
