@@ -80,4 +80,5 @@
     <string name="_3m">3M</string>
     <string name="_6m">6M</string>
     <string name="_1y">1Y</string>
+    <string name="all_time_increase">all time increase</string>
 </resources>

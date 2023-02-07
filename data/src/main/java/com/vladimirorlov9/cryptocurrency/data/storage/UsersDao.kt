@@ -2,6 +2,7 @@ package com.vladimirorlov9.cryptocurrency.data.storage
 
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.Query
 import com.vladimirorlov9.cryptocurrency.data.storage.models.NewUserEntity
 import com.vladimirorlov9.cryptocurrency.domain.models.NewUser
 import com.vladimirorlov9.cryptocurrency.domain.repository.UserRepository
@@ -15,6 +16,13 @@ interface UsersDao: UserRepository {
         val userEntity = mapNewUserToNewUserEntity(user)
         return createNewUser(userEntity)
     }
+
+    override suspend fun getBalance(userId: Long): Double {
+        return getBalanceById(userId = userId)
+    }
+
+    @Query("SELECT balance FROM users WHERE uid LIKE :userId LIMIT 1")
+    fun getBalanceById(userId: Long): Double
 
     fun mapNewUserToNewUserEntity(user: NewUser): NewUserEntity {
         return NewUserEntity(

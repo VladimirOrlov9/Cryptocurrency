@@ -13,7 +13,8 @@ val appModule = module {
             signUpUseCase = get(),
             loadAllCoins = get(),
             loadCoinInfoUseCase = get(),
-            loadHistoricalCoinDataUseCase = get()
+            loadHistoricalCoinDataUseCase = get(),
+            getBalanceInfoUseCase = get()
         )
     }
 }

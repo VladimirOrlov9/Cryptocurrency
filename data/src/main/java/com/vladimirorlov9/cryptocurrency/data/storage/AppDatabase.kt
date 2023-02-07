@@ -7,7 +7,7 @@ import com.vladimirorlov9.cryptocurrency.data.storage.models.SpecificationEntity
 
 @Database(
     entities = [SpecificationEntity::class, NewUserEntity::class],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {

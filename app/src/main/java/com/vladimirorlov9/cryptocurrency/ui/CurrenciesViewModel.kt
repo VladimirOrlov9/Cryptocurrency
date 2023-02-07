@@ -15,7 +15,8 @@ class CurrenciesViewModel(
     private val signUpUseCase: SignUpUseCase,
     private val loadAllCoins: LoadAllCoinsUseCase,
     private val loadCoinInfoUseCase: LoadCoinInfoUseCase,
-    private val loadHistoricalCoinDataUseCase: LoadHistoricalCoinDataUseCase
+    private val loadHistoricalCoinDataUseCase: LoadHistoricalCoinDataUseCase,
+    private val getBalanceInfoUseCase: GetBalanceInfoUseCase
 ): ViewModel() {
 
     private val _resultLiveData = MutableLiveData<String>()
@@ -41,6 +42,9 @@ class CurrenciesViewModel(
 
     private val _coinHistoryLD = MutableLiveData<List<CoinHistoryModel>>()
     val coinHistoryLD: LiveData<List<CoinHistoryModel>> = _coinHistoryLD
+
+    private val _balanceInfoLD = MutableLiveData<BalanceInfo>()
+    val balanceInfoLD: LiveData<BalanceInfo> = _balanceInfoLD
 
     lateinit var latestCryptoPrice: CoinHistoryModel
 
@@ -130,6 +134,16 @@ class CurrenciesViewModel(
                 launch(Dispatchers.Main) {
                     _coinHistoryLD.value = result
                 }
+            }
+        }
+    }
+
+    fun loadBalanceInfo(userId: Long) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = getBalanceInfoUseCase.execute(userId)
+
+            launch(Dispatchers.Main) {
+                _balanceInfoLD.value = result
             }
         }
     }

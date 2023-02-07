@@ -1,5 +1,6 @@
 package com.vladimirorlov9.cryptocurrency.ui.home
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,7 +10,10 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayoutMediator
 import com.vladimirorlov9.cryptocurrency.R
 import com.vladimirorlov9.cryptocurrency.databinding.FragmentHomeBinding
+import com.vladimirorlov9.cryptocurrency.ui.CurrenciesViewModel
 import com.vladimirorlov9.cryptocurrency.ui.MainActivity
+import com.vladimirorlov9.cryptocurrency.ui.signup.PREF_CURRENT_UID
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
  * A simple [Fragment] subclass.
@@ -21,7 +25,18 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
+    private val vm by viewModel<CurrenciesViewModel>()
+
     private lateinit var pagerAdapter: HomePagerAdapter
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        vm.loadBalanceInfo(getUserId())
+    }
+
+    private fun getUserId(): Long = requireActivity().getPreferences(Context.MODE_PRIVATE)
+        .getLong(PREF_CURRENT_UID, -1L)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,6 +52,13 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        vm.balanceInfoLD.observe(viewLifecycleOwner){
+            val balanceStr = "$${it.balance}"
+            val increaseStr = "${it.percentIncrease}% " + resources.getString(R.string.all_time_increase)
+            binding.balanceEdittext.text = balanceStr
+            binding.increaseStatusText.text = increaseStr
+        }
 
         pagerAdapter = HomePagerAdapter(this)
         binding.pager.adapter = pagerAdapter

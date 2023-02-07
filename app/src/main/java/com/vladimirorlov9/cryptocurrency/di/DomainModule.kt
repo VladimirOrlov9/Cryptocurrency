@@ -34,4 +34,10 @@ val domainModule = module {
             currenciesRepository = get()
         )
     }
+
+    factory<GetBalanceInfoUseCase> {
+        GetBalanceInfoUseCase(
+            userRepository = get()
+        )
+    }
 }

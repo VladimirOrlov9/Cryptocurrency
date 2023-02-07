@@ -3,9 +3,10 @@ package com.vladimirorlov9.cryptocurrency.data.storage.models
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.vladimirorlov9.cryptocurrency.domain.constants.baseBalance
 
-@Entity
-data class NewUserEntity(
+@Entity(tableName = "users")
+data class NewUserEntity (
     @PrimaryKey(autoGenerate = true) var uid: Int = 0,
     @ColumnInfo val firstName: String,
     @ColumnInfo val lastName: String,
@@ -13,5 +14,5 @@ data class NewUserEntity(
     @ColumnInfo val phone: String,
     @ColumnInfo val password: String,
     @ColumnInfo val registrationDate: Long,
-    @ColumnInfo(defaultValue = "1500.0") var balance: Double = 1500.0
+    @ColumnInfo(defaultValue = "1500.0") var balance: Double = baseBalance
 )
