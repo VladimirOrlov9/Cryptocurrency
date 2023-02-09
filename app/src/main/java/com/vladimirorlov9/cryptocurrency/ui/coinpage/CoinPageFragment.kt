@@ -163,7 +163,6 @@ class CoinPageFragment : Fragment() {
 
         vm.coinInfoForBuyLD.observe(viewLifecycleOwner) {
 //            binding.sendButton.isClickable = true
-            println("enabled")
             binding.buyButton.isClickable = true
 //            binding.receiveButton.isClickable = true
         }
