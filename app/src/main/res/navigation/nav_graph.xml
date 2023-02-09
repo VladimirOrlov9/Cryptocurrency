@@ -77,5 +77,14 @@
     <fragment
         android:id="@+id/coinPageFragment"
         android:name="com.vladimirorlov9.cryptocurrency.ui.coinpage.CoinPageFragment"
-        tools:layout="@layout/fragment_coin_page" />
+        tools:layout="@layout/fragment_coin_page" >
+        <action
+            android:id="@+id/action_coinPageFragment_to_buyCryptoFragment"
+            app:destination="@id/buyCryptoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/buyCryptoFragment"
+        android:name="com.vladimirorlov9.cryptocurrency.ui.buycrypto.BuyCryptoFragment"
+        android:label="fragment_buy_crypto"
+        tools:layout="@layout/fragment_buy_crypto" />
 </navigation>

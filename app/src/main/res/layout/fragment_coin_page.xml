@@ -44,6 +44,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/coins_have">
 
+<!--        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center"-->
+<!--            app:icon="@drawable/send_icon"-->
+<!--            android:text="@string/send"/>-->
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/send_button"
@@ -51,7 +57,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="@null"
-            android:src="@drawable/send_icon" />
+            android:src="@drawable/send_icon"
+            android:clickable="false" />
 
         <TextView
             android:id="@+id/send_text"
@@ -80,7 +87,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="@null"
-            android:src="@drawable/buy_icon" />
+            android:src="@drawable/buy_icon"
+            android:clickable="false"/>
 
         <TextView
             android:id="@+id/buy_text"
@@ -109,7 +117,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="@null"
-            android:src="@drawable/receive_icon" />
+            android:src="@drawable/receive_icon"
+            android:clickable="false"/>
 
         <TextView
             android:id="@+id/receive_text"

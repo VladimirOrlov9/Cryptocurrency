@@ -1,6 +1,5 @@
 package com.vladimirorlov9.cryptocurrency.ui.coinpage
 
-import android.graphics.Canvas
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -13,7 +12,6 @@ import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
-import com.google.android.material.tabs.TabLayoutMediator
 import com.vladimirorlov9.cryptocurrency.R
 import com.vladimirorlov9.cryptocurrency.databinding.FragmentCoinPageBinding
 import com.vladimirorlov9.cryptocurrency.ui.CurrenciesViewModel
@@ -79,6 +77,7 @@ class CoinPageFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupVMObservers()
 
         binding.toolbar.title = coinName
         binding.toolbar.setupWithNavController(findNavController())
@@ -120,17 +119,20 @@ class CoinPageFragment : Fragment() {
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
-                //TODO("Not yet implemented")
-                println("unselected!")
+                // nothing to do
             }
 
             override fun onTabReselected(tab: TabLayout.Tab?) {
-                //TODO("Not yet implemented")
-                println("reselected!")
+                // nothing to do
             }
-
         })
 
+        binding.buyButton.setOnClickListener {
+            findNavController().navigate(R.id.action_coinPageFragment_to_buyCryptoFragment)
+        }
+    }
+
+    private fun setupVMObservers() {
 
         vm.coinInfoLD.observe(viewLifecycleOwner) {
             Glide.with(this)
@@ -157,6 +159,13 @@ class CoinPageFragment : Fragment() {
 
                 binding.graphic.setData(it.map { elem -> elem.price })
             }
+        }
+
+        vm.coinInfoForBuyLD.observe(viewLifecycleOwner) {
+//            binding.sendButton.isClickable = true
+            println("enabled")
+            binding.buyButton.isClickable = true
+//            binding.receiveButton.isClickable = true
         }
     }
 

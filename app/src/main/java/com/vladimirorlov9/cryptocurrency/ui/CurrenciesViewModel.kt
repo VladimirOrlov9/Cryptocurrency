@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.vladimirorlov9.cryptocurrency.domain.models.*
 import com.vladimirorlov9.cryptocurrency.domain.usecase.*
+import com.vladimirorlov9.cryptocurrency.utils.models.CoinInfoForBuy
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -46,9 +47,13 @@ class CurrenciesViewModel(
     private val _balanceInfoLD = MutableLiveData<BalanceInfo>()
     val balanceInfoLD: LiveData<BalanceInfo> = _balanceInfoLD
 
+    private val _coinInfoForBuyLD = MutableLiveData<CoinInfoForBuy>()
+    val coinInfoForBuyLD: LiveData<CoinInfoForBuy> = _coinInfoForBuyLD
+
     lateinit var latestCryptoPrice: CoinHistoryModel
 
-    val historyMap: MutableMap<Int, List<CoinHistoryModel>> = mutableMapOf()
+    private val _historyMap: MutableMap<Int, List<CoinHistoryModel>> = mutableMapOf()
+    private val _coinInfoForBuy = CoinInfoForBuy()
 
     fun getSpecStatus(specName: String) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -115,13 +120,21 @@ class CurrenciesViewModel(
 
             launch(Dispatchers.Main) {
                 _coinInfoLD.value = result
+
+                _coinInfoForBuy.apply {
+                    id = coinId
+                    name = result.name
+                    symbol = result.symbol
+                    logo = result.logo
+                }
+                checkCoinInfoForBuy(coinInfo = _coinInfoForBuy)
             }
         }
     }
 
     fun loadHistoricalCoinData(coinId: String, days: Int) {
-        if (historyMap.containsKey(days))
-            _coinHistoryLD.value = historyMap[days]
+        if (_historyMap.containsKey(days))
+            _coinHistoryLD.value = _historyMap[days]
         else {
             viewModelScope.launch(Dispatchers.IO) {
                 val result = loadHistoricalCoinDataUseCase.execute(coinId, days).toMutableList()
@@ -129,10 +142,15 @@ class CurrenciesViewModel(
                     latestCryptoPrice = result.last()
                 else
                     result.add(latestCryptoPrice)
-                historyMap[days] = result
+                _historyMap[days] = result
 
                 launch(Dispatchers.Main) {
                     _coinHistoryLD.value = result
+
+                    _coinInfoForBuy.apply {
+                        price = latestCryptoPrice.price
+                    }
+                    checkCoinInfoForBuy(coinInfo = _coinInfoForBuy)
                 }
             }
         }
@@ -145,6 +163,12 @@ class CurrenciesViewModel(
             launch(Dispatchers.Main) {
                 _balanceInfoLD.value = result
             }
+        }
+    }
+
+    private fun checkCoinInfoForBuy(coinInfo: CoinInfoForBuy) {
+        if (coinInfo.isInitialized()) {
+            _coinInfoForBuyLD.value = coinInfo
         }
     }
 
