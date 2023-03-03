@@ -33,6 +33,7 @@ import com.vladimirorlov9.cryptocurrency.R
 import com.vladimirorlov9.cryptocurrency.databinding.ActivityMainBinding
 import com.vladimirorlov9.cryptocurrency.domain.models.CryptoPrice
 import org.koin.androidx.compose.getViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
  * [MainActivity] is the main activity, which contains FragmentContainer.
@@ -42,6 +43,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
+
+    private val vm by viewModel<CurrenciesViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         WindowCompat.setDecorFitsSystemWindows(window, true)

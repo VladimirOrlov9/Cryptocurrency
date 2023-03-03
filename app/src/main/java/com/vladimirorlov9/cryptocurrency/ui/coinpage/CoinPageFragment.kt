@@ -17,7 +17,7 @@ import com.vladimirorlov9.cryptocurrency.databinding.FragmentCoinPageBinding
 import com.vladimirorlov9.cryptocurrency.ui.CurrenciesViewModel
 import com.vladimirorlov9.cryptocurrency.ui.search.BUNDLE_COIN_ID
 import com.vladimirorlov9.cryptocurrency.ui.search.BUNDLE_COIN_NAME
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import kotlin.math.roundToInt
 
 /**
@@ -33,7 +33,7 @@ class CoinPageFragment : Fragment() {
     private var _binding: FragmentCoinPageBinding? = null
     private val binding get() = _binding!!
 
-    private val vm by viewModel<CurrenciesViewModel>()
+    private val vm by sharedViewModel<CurrenciesViewModel>()
 
     private lateinit var coinId: String
     private lateinit var coinName: String

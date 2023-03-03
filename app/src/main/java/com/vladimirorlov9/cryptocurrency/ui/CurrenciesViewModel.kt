@@ -18,7 +18,7 @@ class CurrenciesViewModel(
     private val loadCoinInfoUseCase: LoadCoinInfoUseCase,
     private val loadHistoricalCoinDataUseCase: LoadHistoricalCoinDataUseCase,
     private val getBalanceInfoUseCase: GetBalanceInfoUseCase
-): ViewModel() {
+) : ViewModel() {
 
     private val _resultLiveData = MutableLiveData<String>()
     val resultLiveData: LiveData<String> = _resultLiveData
@@ -171,5 +171,8 @@ class CurrenciesViewModel(
             _coinInfoForBuyLD.value = coinInfo
         }
     }
+
+    fun getCoinInfoForBuy(): CoinInfoForBuy? =
+        if (_coinInfoForBuy.isInitialized()) _coinInfoForBuy else null
 
 }
