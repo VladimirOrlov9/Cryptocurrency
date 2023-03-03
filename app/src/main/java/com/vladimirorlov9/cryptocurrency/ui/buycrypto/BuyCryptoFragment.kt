@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.doOnTextChanged
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.vladimirorlov9.cryptocurrency.R
@@ -53,6 +54,10 @@ class BuyCryptoFragment : Fragment() {
             binding.enterPriceText.text = coinsForBuy
             val price = ((coinsForBuy.toDouble() * coinPriceInUSD) * 100).toInt() / 100.0
             binding.priceInUsd.text = "$$price"
+        }
+
+        binding.enterPriceText.doOnTextChanged { text, _, _, _ ->
+            binding.buyButton.isEnabled = text.toString() != "0.0"
         }
     }
 }
