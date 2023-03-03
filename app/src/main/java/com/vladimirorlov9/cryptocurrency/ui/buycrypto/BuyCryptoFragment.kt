@@ -57,7 +57,8 @@ class BuyCryptoFragment : Fragment() {
         }
 
         binding.enterPriceText.doOnTextChanged { text, _, _, _ ->
-            binding.buyButton.isEnabled = text.toString() != "0.0"
+            val textDouble = text.toString().toDouble()
+            binding.buyButton.isEnabled = textDouble != 0.0
         }
     }
 }
