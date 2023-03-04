@@ -61,4 +61,9 @@ class BuyCryptoFragment : Fragment() {
             binding.buyButton.isEnabled = textDouble != 0.0
         }
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

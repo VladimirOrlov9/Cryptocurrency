@@ -81,4 +81,16 @@
     <string name="_6m">6M</string>
     <string name="_1y">1Y</string>
     <string name="all_time_increase">all time increase</string>
+    <string name="you_will_receive">You will receive</string>
+    <string name="p2p_trading">P2P Trading</string>
+    <string name="p2p_trading_icon">P2P trading icon</string>
+    <string name="bank_transfer">Bank Transfer</string>
+    <string name="safety_measures_in_p2p_trading">Safety measures in P2P Trading</string>
+    <string name="info_icon">Info icon</string>
+    <string name="card">Card</string>
+    <string name="master_card">Master Card</string>
+    <string name="how_to_pay">How to pay</string>
+    <string name="wallet_balance">Wallet Balance</string>
+    <string name="confirm">Confirm</string>
+    <string name="select_payment_method">Select Payment Method</string>
 </resources>
