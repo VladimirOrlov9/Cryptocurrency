@@ -19,7 +19,8 @@ class CurrenciesViewModel(
     private val loadCoinInfoUseCase: LoadCoinInfoUseCase,
     private val loadHistoricalCoinDataUseCase: LoadHistoricalCoinDataUseCase,
     private val getBalanceInfoUseCase: GetBalanceInfoUseCase,
-    private val buyCoinUseCase: BuyCoinUseCase
+    private val buyCoinUseCase: BuyCoinUseCase,
+    private val loadStockTokensUseCase: LoadStockTokensUseCase
 ) : ViewModel() {
 
     private val _resultLiveData = MutableLiveData<String>()
@@ -98,8 +99,14 @@ class CurrenciesViewModel(
         }
     }
 
-    fun getStockCoinsStatus(userId: Long) {
-        // TODO after table creation add this block
+    fun getStockCoinsStatus(userId: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val tokens = loadStockTokensUseCase.execute(userId)
+
+            withContext(Dispatchers.Main) {
+                _stockTokensLD.value = tokens
+            }
+        }
     }
 
     fun getStockNFTsStatus(userId: Long) {
@@ -177,11 +184,12 @@ class CurrenciesViewModel(
     fun getCoinInfoForBuy(): CoinInfoForBuy? =
         if (_coinInfoForBuy.isInitialized()) _coinInfoForBuy else null
 
-    fun buyCryptoByWallet(userId: Int, coin: BuyCoin) {
+    fun buyCryptoByWallet(userId: Int, coin: BuyCoin, price: Double) {
         viewModelScope.launch(Dispatchers.IO) {
             val newBalance = buyCoinUseCase.execute(
                 userId = userId,
-                buyCoin = coin
+                buyCoin = coin,
+                price = price
             )
 
             withContext(Dispatchers.Main) {

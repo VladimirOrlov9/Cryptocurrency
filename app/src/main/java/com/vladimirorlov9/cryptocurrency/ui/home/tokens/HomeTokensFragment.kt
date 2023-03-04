@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.vladimirorlov9.cryptocurrency.databinding.FragmentHomeTokensBinding
 import com.vladimirorlov9.cryptocurrency.ui.CurrenciesViewModel
 import com.vladimirorlov9.cryptocurrency.ui.signup.PREF_CURRENT_UID
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
@@ -22,15 +23,8 @@ class HomeTokensFragment : Fragment() {
     private var _binding: FragmentHomeTokensBinding? = null
     private val binding get() = _binding!!
 
-    private val vm by viewModel<CurrenciesViewModel>()
+    private val vm by sharedViewModel<CurrenciesViewModel>()
     private lateinit var recyclerAdapter: HomeTokensAdapter
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        val userId = getUserId()
-        vm.getStockCoinsStatus(userId)
-    }
 
     private fun getUserId(): Long = requireActivity().getPreferences(Context.MODE_PRIVATE)
         .getLong(PREF_CURRENT_UID, -1L)
@@ -41,6 +35,9 @@ class HomeTokensFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         _binding = FragmentHomeTokensBinding.inflate(inflater, container, false)
+
+        val userId = getUserId()
+        vm.getStockCoinsStatus(userId.toInt())
 
         return binding.root
     }

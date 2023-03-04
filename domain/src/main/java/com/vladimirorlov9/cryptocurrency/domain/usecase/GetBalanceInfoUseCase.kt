@@ -8,7 +8,7 @@ import kotlin.math.roundToInt
 class GetBalanceInfoUseCase(private val userRepository: UserRepository) {
 
     suspend fun execute(userId: Long): BalanceInfo {
-        val balance = userRepository.getBalance(userId)
+        val balance = (userRepository.getBalance(userId) * 100).toInt() / 100.0
         val percentDifference = ((baseBalance - balance) / baseBalance).roundToInt()
         return BalanceInfo(
             balance = balance,

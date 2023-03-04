@@ -46,4 +46,10 @@ val domainModule = module {
             coinRepository = get()
         )
     }
+
+    factory<LoadStockTokensUseCase> {
+        LoadStockTokensUseCase(
+            coinRepository = get()
+        )
+    }
 }

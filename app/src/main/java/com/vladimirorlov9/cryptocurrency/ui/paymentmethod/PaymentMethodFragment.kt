@@ -76,15 +76,15 @@ class PaymentMethodFragment : Fragment() {
             } else if (binding.walletRadio.isChecked) {
                 vm.buyCryptoByWallet(
                     // TODO fix uid type for the whole application (to Int)
-                    getUserId().toInt(),
-                    BuyCoin(
+                    userId = getUserId().toInt(),
+                    coin = BuyCoin(
                         logo = coinInfo.logo!!,
                         name = coinInfo.name!!,
                         symbol = coinInfo.symbol!!,
                         amount = coinAmount,
-                        serverId = coinInfo.id!!,
-                        price = coinInfo.price!! * coinAmount
-                    )
+                        serverId = coinInfo.id!!
+                    ),
+                    price = coinInfo.price!! * coinAmount
                 )
             }
         }

@@ -8,10 +8,11 @@ import kotlin.math.roundToInt
 
 class BuyCoinUseCase(private val coinRepository: CoinRepository) {
 
-    suspend fun execute(userId: Int, buyCoin: BuyCoin): BalanceInfo {
+    suspend fun execute(userId: Int, buyCoin: BuyCoin, price: Double): BalanceInfo {
         val balance = coinRepository.buyCoin(
             userId = userId,
-            buyCoin = buyCoin
+            buyCoin = buyCoin,
+            price = price
         )
         val percentDifference = ((baseBalance - balance) / baseBalance).roundToInt()
         return BalanceInfo(

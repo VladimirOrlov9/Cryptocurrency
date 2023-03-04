@@ -10,7 +10,16 @@ import com.vladimirorlov9.cryptocurrency.domain.repository.CoinRepository
 @Dao
 interface CoinsDao : CoinRepository {
 
-    override suspend fun buyCoin(userId: Int, buyCoin: BuyCoin): Double {
+    override suspend fun getStockList(uid: Int): List<BuyCoin> {
+        return getStockTokens(uid).map { coinEntity ->
+            coinEntity.mapToBuyCoin()
+        }
+    }
+
+    @Query("SELECT * FROM coins WHERE userId LIKE :uid")
+    fun getStockTokens(uid: Int): List<CoinEntity>
+
+    override suspend fun buyCoin(userId: Int, buyCoin: BuyCoin, price: Double): Double {
         val existingCoin = getCoinByServerId(buyCoin.serverId)
         if (existingCoin == null) {
             insertCoin(
@@ -26,7 +35,7 @@ interface CoinsDao : CoinRepository {
         }
         return updateUserBalance(
             incOrDec = false,
-            price = buyCoin.price,
+            price = price,
             uid = userId
         )
     }
@@ -67,6 +76,16 @@ interface CoinsDao : CoinRepository {
             symbol = this.symbol,
             amount = this.amount,
             userId = userId
+        )
+    }
+
+    private fun CoinEntity.mapToBuyCoin(): BuyCoin {
+        return BuyCoin(
+            serverId = this.serverId,
+            logo = this.logo,
+            name = this.name,
+            symbol = this.symbol,
+            amount = this.amount
         )
     }
 }
