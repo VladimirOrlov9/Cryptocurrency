@@ -8,6 +8,7 @@ import com.vladimirorlov9.cryptocurrency.data.api.retrofit2.CoinMarketCapService
 import com.vladimirorlov9.cryptocurrency.data.api.retrofit2.CoinPaprikaApiService
 import com.vladimirorlov9.cryptocurrency.data.repository.CurrenciesRepositoryImpl
 import com.vladimirorlov9.cryptocurrency.data.storage.AppDatabase
+import com.vladimirorlov9.cryptocurrency.domain.repository.CoinRepository
 import com.vladimirorlov9.cryptocurrency.domain.repository.CurrenciesRepository
 import com.vladimirorlov9.cryptocurrency.domain.repository.SpecificationsRepository
 import com.vladimirorlov9.cryptocurrency.domain.repository.UserRepository
@@ -56,5 +57,10 @@ val dataModule = module {
 
     single<CurrenciesRepository> {
         CurrenciesRepositoryImpl(currenciesApiInterface = get())
+    }
+
+    single<CoinRepository> {
+        val database = get<AppDatabase>()
+        database.coinsDao()
     }
 }

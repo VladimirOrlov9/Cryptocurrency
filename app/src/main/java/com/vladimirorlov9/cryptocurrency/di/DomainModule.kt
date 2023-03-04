@@ -40,4 +40,10 @@ val domainModule = module {
             userRepository = get()
         )
     }
+
+    factory<BuyCoinUseCase> {
+        BuyCoinUseCase(
+            coinRepository = get()
+        )
+    }
 }

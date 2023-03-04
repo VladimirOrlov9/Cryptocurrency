@@ -13,7 +13,7 @@ import com.vladimirorlov9.cryptocurrency.databinding.FragmentHomeBinding
 import com.vladimirorlov9.cryptocurrency.ui.CurrenciesViewModel
 import com.vladimirorlov9.cryptocurrency.ui.MainActivity
 import com.vladimirorlov9.cryptocurrency.ui.signup.PREF_CURRENT_UID
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 /**
  * A simple [Fragment] subclass.
@@ -25,7 +25,7 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-    private val vm by viewModel<CurrenciesViewModel>()
+    private val vm by sharedViewModel<CurrenciesViewModel>()
 
     private lateinit var pagerAdapter: HomePagerAdapter
 

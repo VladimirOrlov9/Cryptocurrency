@@ -86,5 +86,13 @@
         android:id="@+id/buyCryptoFragment"
         android:name="com.vladimirorlov9.cryptocurrency.ui.buycrypto.BuyCryptoFragment"
         android:label="fragment_buy_crypto"
-        tools:layout="@layout/fragment_buy_crypto" />
+        tools:layout="@layout/fragment_buy_crypto" >
+        <action
+            android:id="@+id/action_buyCryptoFragment_to_paymentMethodFragment"
+            app:destination="@id/paymentMethodFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/paymentMethodFragment"
+        android:name="com.vladimirorlov9.cryptocurrency.ui.paymentmethod.PaymentMethodFragment"
+        tools:layout="@layout/fragment_payment_method" />
 </navigation>

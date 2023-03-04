@@ -9,6 +9,7 @@ import com.vladimirorlov9.cryptocurrency.domain.usecase.*
 import com.vladimirorlov9.cryptocurrency.utils.models.CoinInfoForBuy
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class CurrenciesViewModel(
     private val getSpecStatusUseCase: GetSpecStatusUseCase,
@@ -17,7 +18,8 @@ class CurrenciesViewModel(
     private val loadAllCoins: LoadAllCoinsUseCase,
     private val loadCoinInfoUseCase: LoadCoinInfoUseCase,
     private val loadHistoricalCoinDataUseCase: LoadHistoricalCoinDataUseCase,
-    private val getBalanceInfoUseCase: GetBalanceInfoUseCase
+    private val getBalanceInfoUseCase: GetBalanceInfoUseCase,
+    private val buyCoinUseCase: BuyCoinUseCase
 ) : ViewModel() {
 
     private val _resultLiveData = MutableLiveData<String>()
@@ -174,5 +176,19 @@ class CurrenciesViewModel(
 
     fun getCoinInfoForBuy(): CoinInfoForBuy? =
         if (_coinInfoForBuy.isInitialized()) _coinInfoForBuy else null
+
+    fun buyCryptoByWallet(userId: Int, coin: BuyCoin) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val newBalance = buyCoinUseCase.execute(
+                userId = userId,
+                buyCoin = coin
+            )
+
+            withContext(Dispatchers.Main) {
+                _balanceInfoLD.value = newBalance
+            }
+        }
+
+    }
 
 }

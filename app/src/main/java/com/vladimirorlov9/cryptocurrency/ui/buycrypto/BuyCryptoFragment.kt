@@ -19,6 +19,9 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
  * Use the [BuyCryptoFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
+
+const val COIN_AMOUNT_BUNDLE = "coin_amount"
+
 class BuyCryptoFragment : Fragment() {
 
     private var _binding: FragmentBuyCryptoBinding? = null
@@ -59,6 +62,16 @@ class BuyCryptoFragment : Fragment() {
         binding.enterPriceText.doOnTextChanged { text, _, _, _ ->
             val textDouble = text.toString().toDouble()
             binding.buyButton.isEnabled = textDouble != 0.0
+        }
+
+        binding.buyButton.setOnClickListener {
+            val bundle = Bundle().apply {
+                putDouble(COIN_AMOUNT_BUNDLE, binding.enterPriceText.text.toString().toDouble())
+            }
+            findNavController().navigate(
+                R.id.action_buyCryptoFragment_to_paymentMethodFragment,
+                bundle
+            )
         }
     }
 

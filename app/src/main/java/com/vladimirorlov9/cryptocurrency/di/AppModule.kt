@@ -14,7 +14,8 @@ val appModule = module {
             loadAllCoins = get(),
             loadCoinInfoUseCase = get(),
             loadHistoricalCoinDataUseCase = get(),
-            getBalanceInfoUseCase = get()
+            getBalanceInfoUseCase = get(),
+            buyCoinUseCase = get()
         )
     }
 }
