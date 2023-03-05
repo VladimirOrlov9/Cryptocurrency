@@ -11,6 +11,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.vladimirorlov9.cryptocurrency.R
 import com.vladimirorlov9.cryptocurrency.databinding.FragmentPaymentMethodBinding
 import com.vladimirorlov9.cryptocurrency.domain.models.BuyCoin
+import com.vladimirorlov9.cryptocurrency.domain.usecase.round
 import com.vladimirorlov9.cryptocurrency.ui.CurrenciesViewModel
 import com.vladimirorlov9.cryptocurrency.ui.buycrypto.COIN_AMOUNT_BUNDLE
 import com.vladimirorlov9.cryptocurrency.ui.signup.PREF_CURRENT_UID
@@ -47,7 +48,7 @@ class PaymentMethodFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.toolbar.setupWithNavController(findNavController())
 
-        coinInfo = vm.coinInfoForBuyLD.value ?: CoinInfoForBuy()
+
         coinAmount = arguments?.getDouble(COIN_AMOUNT_BUNDLE, -1.0) ?: -1.0
         if (coinAmount != -1.0) {
             binding.coinAmount.text = coinAmount.toString()
@@ -55,7 +56,9 @@ class PaymentMethodFragment : Fragment() {
             findNavController().popBackStack()
         }
 
-        if (coinInfo.isInitialized()) {
+        val coinInfoFromVM = vm.coinInfoForBuyLD.value
+        if (coinInfoFromVM != null) {
+            coinInfo = coinInfoFromVM
             initUI(coinInfo, coinAmount)
         } else {
             findNavController().popBackStack()
@@ -82,13 +85,13 @@ class PaymentMethodFragment : Fragment() {
                     // TODO fix uid type for the whole application (to Int)
                     userId = getUserId().toInt(),
                     coin = BuyCoin(
-                        logo = coinInfo.logo!!,
-                        name = coinInfo.name!!,
-                        symbol = coinInfo.symbol!!,
+                        logo = coinInfo.logo,
+                        name = coinInfo.name,
+                        symbol = coinInfo.symbol,
                         amount = coinAmount,
-                        serverId = coinInfo.id!!
+                        serverId = coinInfo.id
                     ),
-                    price = coinInfo.price!! * coinAmount
+                    price = coinInfo.price * coinAmount
                 )
 
             }
@@ -97,12 +100,13 @@ class PaymentMethodFragment : Fragment() {
         vm.paymentSuccessfulLD.observe(viewLifecycleOwner) {
             if (it) {
                 val bundle = Bundle().apply {
-                    putString(COIN_AMOUNT_SYMBOL_BUNDLE, "$coinAmount ${coinInfo.symbol!!}")
+                    putString(COIN_AMOUNT_SYMBOL_BUNDLE, "$coinAmount ${coinInfo.symbol}")
                 }
                 findNavController().navigate(
                     R.id.action_paymentMethodFragment_to_paymentSuccessfulFragment,
                     bundle
                 )
+                vm.resetPaymentSuccessfulLD()
             }
         }
     }
@@ -130,7 +134,7 @@ class PaymentMethodFragment : Fragment() {
 
 
     private fun initUI(coinInfo: CoinInfoForBuy, coins: Double) {
-        val price = coins * coinInfo.price!!
+        val price = (coins * coinInfo.price).round(2)
         val priceUSDString = "$price USD"
 
         binding.p2pTradingPriceUsd.text = priceUSDString

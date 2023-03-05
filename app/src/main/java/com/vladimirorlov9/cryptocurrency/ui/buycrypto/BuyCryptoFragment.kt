@@ -11,7 +11,6 @@ import androidx.navigation.ui.setupWithNavController
 import com.vladimirorlov9.cryptocurrency.R
 import com.vladimirorlov9.cryptocurrency.databinding.FragmentBuyCryptoBinding
 import com.vladimirorlov9.cryptocurrency.ui.CurrenciesViewModel
-import com.vladimirorlov9.cryptocurrency.utils.models.CoinInfoForBuy
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 /**
@@ -44,11 +43,11 @@ class BuyCryptoFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.toolbar.setupWithNavController(findNavController())
 
-        val coinInfo = vm.coinInfoForBuyLD.value ?: CoinInfoForBuy()
-        if (coinInfo.isInitialized()) {
+        val coinInfo = vm.coinInfoForBuyLD.value
+        if (coinInfo != null) {
             binding.toolbar.title = "${resources.getString(R.string.buy)} ${coinInfo.name}"
             binding.coinSymbolText.text = coinInfo.symbol
-            coinPriceInUSD = coinInfo.price!!
+            coinPriceInUSD = coinInfo.price
         } else {
             findNavController().popBackStack()
         }

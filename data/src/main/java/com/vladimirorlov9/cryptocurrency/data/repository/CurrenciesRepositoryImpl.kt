@@ -8,7 +8,6 @@ import com.vladimirorlov9.cryptocurrency.domain.models.CoinHistoryModel
 import com.vladimirorlov9.cryptocurrency.domain.models.CoinInfoModel
 import com.vladimirorlov9.cryptocurrency.domain.models.SearchCoin
 import com.vladimirorlov9.cryptocurrency.domain.repository.CurrenciesRepository
-import kotlin.math.roundToInt
 
 class CurrenciesRepositoryImpl(
     private val currenciesApiInterface: CurrenciesApiInterface

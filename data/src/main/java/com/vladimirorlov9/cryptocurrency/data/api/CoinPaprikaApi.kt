@@ -6,7 +6,6 @@ import com.vladimirorlov9.cryptocurrency.data.api.models.coinpaprika.coins.CoinI
 import com.vladimirorlov9.cryptocurrency.data.api.models.coinpaprika.history.CoinHistoryPoint
 import com.vladimirorlov9.cryptocurrency.data.api.models.coinpaprika.ohlcv.OHLCV
 import com.vladimirorlov9.cryptocurrency.data.api.retrofit2.CoinPaprikaApiService
-import com.vladimirorlov9.cryptocurrency.domain.models.SearchCoin
 
 const val TAG = "CoinPaprikaApi"
 
@@ -41,6 +40,6 @@ class CoinPaprikaApi(private val apiService: CoinPaprikaApiService) : Currencies
     override suspend fun getTodayOHLCV(coinId: String): OHLCV {
         val call = apiService.getTodayOHLCV(coinId)
         val response = call.execute().body() ?: listOf()
-        return response.last()
+        return response.lastOrNull() ?: getTodayOHLCV(coinId)
     }
 }

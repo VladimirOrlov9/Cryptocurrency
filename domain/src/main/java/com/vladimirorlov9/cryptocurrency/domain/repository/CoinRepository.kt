@@ -6,4 +6,5 @@ interface CoinRepository {
 
     suspend fun buyCoin(userId: Int, buyCoin: BuyCoin, price: Double): Double
     suspend fun getStockList(uid: Int): List<BuyCoin>
+    fun getStockCoinInfo(coinServerId: String, userId: Int): BuyCoin?
 }

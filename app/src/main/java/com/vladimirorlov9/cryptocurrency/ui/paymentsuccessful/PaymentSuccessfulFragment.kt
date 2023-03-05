@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.vladimirorlov9.cryptocurrency.R
 import com.vladimirorlov9.cryptocurrency.databinding.FragmentPaymentSuccessfulBinding
-import com.vladimirorlov9.cryptocurrency.ui.buycrypto.COIN_AMOUNT_BUNDLE
 import com.vladimirorlov9.cryptocurrency.ui.paymentmethod.COIN_AMOUNT_SYMBOL_BUNDLE
 
 /**
@@ -44,7 +43,7 @@ class PaymentSuccessfulFragment : Fragment() {
         binding.coins.text = coinText
 
         binding.doneButton.setOnClickListener {
-            findNavController().popBackStack(R.id.homeFragment, true)
+            findNavController().popBackStack(R.id.homeFragment, false)
         }
     }
 

@@ -41,8 +41,8 @@ class CurrenciesViewModel(
     private val _allCoinsLD = MutableLiveData<List<SearchCoin>>()
     val allCoinsLD: LiveData<List<SearchCoin>> = _allCoinsLD
 
-    private val _coinInfoLD = MutableLiveData<CoinInfoModel>()
-    val coinInfoLD: LiveData<CoinInfoModel> = _coinInfoLD
+    private val _coinInfoLD = MutableLiveData<CoinScreenModel>()
+    val coinInfoLD: LiveData<CoinScreenModel> = _coinInfoLD
 
     private val _coinHistoryLD = MutableLiveData<List<CoinHistoryModel>>()
     val coinHistoryLD: LiveData<List<CoinHistoryModel>> = _coinHistoryLD
@@ -53,10 +53,8 @@ class CurrenciesViewModel(
     private val _coinInfoForBuyLD = MutableLiveData<CoinInfoForBuy>()
     val coinInfoForBuyLD: LiveData<CoinInfoForBuy> = _coinInfoForBuyLD
 
-    lateinit var latestCryptoPrice: CoinHistoryModel
 
     private val _historyMap: MutableMap<Int, List<CoinHistoryModel>> = mutableMapOf()
-    private val _coinInfoForBuy = CoinInfoForBuy()
 
     private val _paymentSuccessfulLD = MutableLiveData(false)
     val paymentSuccessfulLD: LiveData<Boolean> = _paymentSuccessfulLD
@@ -126,20 +124,20 @@ class CurrenciesViewModel(
         }
     }
 
-    fun loadCoinInfo(coinId: String) {
+    fun loadCoinInfo(coinId: String, userId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            val result = loadCoinInfoUseCase.execute(coinId)
+            val result = loadCoinInfoUseCase.execute(coinId, userId)
 
             launch(Dispatchers.Main) {
                 _coinInfoLD.value = result
 
-                _coinInfoForBuy.apply {
-                    id = coinId
-                    name = result.name
-                    symbol = result.symbol
-                    logo = result.logo
-                }
-                checkCoinInfoForBuy(coinInfo = _coinInfoForBuy)
+                _coinInfoForBuyLD.value = CoinInfoForBuy(
+                    id = coinId,
+                    name = result.coinInfo.name,
+                    symbol = result.coinInfo.symbol,
+                    logo = result.coinInfo.logo,
+                    price = result.coinCourse
+                )
             }
         }
     }
@@ -149,20 +147,14 @@ class CurrenciesViewModel(
             _coinHistoryLD.value = _historyMap[days]
         else {
             viewModelScope.launch(Dispatchers.IO) {
-                val result = loadHistoricalCoinDataUseCase.execute(coinId, days).toMutableList()
-                if (!::latestCryptoPrice.isInitialized)
-                    latestCryptoPrice = result.last()
-                else
-                    result.add(latestCryptoPrice)
+                val result = loadHistoricalCoinDataUseCase.execute(
+                    coinId = coinId,
+                    days = days
+                )
                 _historyMap[days] = result
 
                 launch(Dispatchers.Main) {
-                    _coinHistoryLD.value = result
-
-                    _coinInfoForBuy.apply {
-                        price = latestCryptoPrice.price
-                    }
-                    checkCoinInfoForBuy(coinInfo = _coinInfoForBuy)
+                    _coinHistoryLD.value = _historyMap[days]
                 }
             }
         }
@@ -178,15 +170,6 @@ class CurrenciesViewModel(
         }
     }
 
-    private fun checkCoinInfoForBuy(coinInfo: CoinInfoForBuy) {
-        if (coinInfo.isInitialized()) {
-            _coinInfoForBuyLD.value = coinInfo
-        }
-    }
-
-    fun getCoinInfoForBuy(): CoinInfoForBuy? =
-        if (_coinInfoForBuy.isInitialized()) _coinInfoForBuy else null
-
     fun buyCryptoByWallet(userId: Int, coin: BuyCoin, price: Double) {
         viewModelScope.launch(Dispatchers.IO) {
             val newBalance = buyCoinUseCase.execute(
@@ -201,6 +184,10 @@ class CurrenciesViewModel(
             }
         }
 
+    }
+
+    fun resetPaymentSuccessfulLD() {
+        _paymentSuccessfulLD.postValue(false)
     }
 
 }

@@ -1,5 +1,6 @@
 package com.vladimirorlov9.cryptocurrency.ui.coinpage
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -14,9 +15,11 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.vladimirorlov9.cryptocurrency.R
 import com.vladimirorlov9.cryptocurrency.databinding.FragmentCoinPageBinding
+import com.vladimirorlov9.cryptocurrency.domain.usecase.round
 import com.vladimirorlov9.cryptocurrency.ui.CurrenciesViewModel
 import com.vladimirorlov9.cryptocurrency.ui.search.BUNDLE_COIN_ID
 import com.vladimirorlov9.cryptocurrency.ui.search.BUNDLE_COIN_NAME
+import com.vladimirorlov9.cryptocurrency.ui.signup.PREF_CURRENT_UID
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import kotlin.math.roundToInt
 
@@ -37,6 +40,7 @@ class CoinPageFragment : Fragment() {
 
     private lateinit var coinId: String
     private lateinit var coinName: String
+    private var userId: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,12 +50,17 @@ class CoinPageFragment : Fragment() {
             findNavController().popBackStack()
         }
 
-        vm.loadCoinInfo(coinId)
+        userId = getUserId().toInt()
+
+        vm.loadCoinInfo(coinId, userId)
         vm.loadHistoricalCoinData(
             coinId = coinId,
             days = 7
         )
     }
+
+    private fun getUserId(): Long = requireActivity().getPreferences(Context.MODE_PRIVATE)
+        .getLong(PREF_CURRENT_UID, -1L)
 
     private fun initParameters(): Boolean {
         val args = arguments
@@ -136,10 +145,13 @@ class CoinPageFragment : Fragment() {
 
         vm.coinInfoLD.observe(viewLifecycleOwner) {
             Glide.with(this)
-                .load(it.logo)
+                .load(it.coinInfo.logo)
                 .into(binding.coinLogo)
 
-            binding.coinsHave.text = "0.0 ${it.symbol}"
+            val coinsHaveText = "${it.localAmount} ${it.coinInfo.symbol}"
+            binding.coinsHave.text = coinsHaveText
+            val currentPriceText = "$${it.coinCourse.round(2)}"
+            binding.currentPrice.text = currentPriceText
         }
 
         vm.coinHistoryLD.observe(viewLifecycleOwner) {
@@ -154,7 +166,6 @@ class CoinPageFragment : Fragment() {
                 percentageString += ((percentageLastDifference * 100).roundToInt() / 100.0)
                 percentageString += "%"
 
-                binding.currentPrice.text = "$$currentPrice"
                 binding.periodChangePercent.text = percentageString
 
                 binding.graphic.setData(it.map { elem -> elem.price })

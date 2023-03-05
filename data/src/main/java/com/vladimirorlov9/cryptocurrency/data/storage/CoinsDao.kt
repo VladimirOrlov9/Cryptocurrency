@@ -4,11 +4,14 @@ import androidx.room.*
 import com.vladimirorlov9.cryptocurrency.data.storage.models.CoinEntity
 import com.vladimirorlov9.cryptocurrency.data.storage.models.NewUserEntity
 import com.vladimirorlov9.cryptocurrency.domain.models.BuyCoin
-import com.vladimirorlov9.cryptocurrency.domain.models.CryptoPrice
 import com.vladimirorlov9.cryptocurrency.domain.repository.CoinRepository
 
 @Dao
 interface CoinsDao : CoinRepository {
+
+    override fun getStockCoinInfo(coinServerId: String, userId: Int): BuyCoin? {
+        return getCoinByServerId(serverId = coinServerId, userId = userId)?.mapToBuyCoin()
+    }
 
     override suspend fun getStockList(uid: Int): List<BuyCoin> {
         return getStockTokens(uid).map { coinEntity ->
@@ -20,7 +23,7 @@ interface CoinsDao : CoinRepository {
     fun getStockTokens(uid: Int): List<CoinEntity>
 
     override suspend fun buyCoin(userId: Int, buyCoin: BuyCoin, price: Double): Double {
-        val existingCoin = getCoinByServerId(buyCoin.serverId)
+        val existingCoin = getCoinByServerId(buyCoin.serverId, userId)
         if (existingCoin == null) {
             insertCoin(
                 coin = buyCoin.mapToCoinEntity(
@@ -62,8 +65,8 @@ interface CoinsDao : CoinRepository {
     @Query("SELECT * FROM users WHERE uid LIKE :uid LIMIT 1")
     fun getUserInfo(uid: Int): NewUserEntity
 
-    @Query("SELECT * FROM coins WHERE serverId LIKE :serverId LIMIT 1")
-    fun getCoinByServerId(serverId: String): CoinEntity?
+    @Query("SELECT * FROM coins WHERE serverId LIKE :serverId AND userId LIKE :userId LIMIT 1")
+    fun getCoinByServerId(serverId: String, userId: Int): CoinEntity?
 
     @Insert
     fun insertCoin(coin: CoinEntity)
