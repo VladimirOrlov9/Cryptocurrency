@@ -4,6 +4,7 @@ import android.util.Log
 import com.vladimirorlov9.cryptocurrency.data.api.models.coinpaprika.coininfo.CoinInfo
 import com.vladimirorlov9.cryptocurrency.data.api.models.coinpaprika.coins.CoinItem
 import com.vladimirorlov9.cryptocurrency.data.api.models.coinpaprika.history.CoinHistoryPoint
+import com.vladimirorlov9.cryptocurrency.data.api.models.coinpaprika.ohlcv.OHLCV
 import com.vladimirorlov9.cryptocurrency.data.api.retrofit2.CoinPaprikaApiService
 import com.vladimirorlov9.cryptocurrency.domain.models.SearchCoin
 
@@ -35,5 +36,10 @@ class CoinPaprikaApi(private val apiService: CoinPaprikaApiService) : Currencies
         Log.i(TAG, call.request().url().toString())
         val response = call.execute()
         return response.body() ?: listOf()
+    }
+
+    override suspend fun getTodayOHLCV(coinId: String): OHLCV {
+        val statList = apiService.getTodayOHLCV(coinId)
+        return statList.last()
     }
 }

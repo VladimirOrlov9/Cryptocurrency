@@ -3,6 +3,7 @@ package com.vladimirorlov9.cryptocurrency.data.api.retrofit2
 import com.vladimirorlov9.cryptocurrency.data.api.models.coinpaprika.coininfo.CoinInfo
 import com.vladimirorlov9.cryptocurrency.data.api.models.coinpaprika.coins.CoinItem
 import com.vladimirorlov9.cryptocurrency.data.api.models.coinpaprika.history.CoinHistoryPoint
+import com.vladimirorlov9.cryptocurrency.data.api.models.coinpaprika.ohlcv.OHLCV
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -22,6 +23,11 @@ interface CoinPaprikaApiService {
         @Query("start") startDate: Long,
         @Query("interval") interval: String
     ): Call<List<CoinHistoryPoint>>
+
+    @GET("coins/{id}/ohlcv/today")
+    suspend fun getTodayOHLCV(
+        @Path("id") coinId: String
+    ): List<OHLCV>
 
     companion object {
         const val BASE_URL = "https://api.coinpaprika.com/v1/"

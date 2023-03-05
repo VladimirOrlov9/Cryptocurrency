@@ -9,4 +9,5 @@ interface CurrenciesRepository {
     suspend fun getCoins(): List<SearchCoin>
     suspend fun getCoinInfo(coinId: String): CoinInfoModel
     suspend fun getCoinHistory(coinId: String, start: Long, interval: Int): List<CoinHistoryModel>
+    suspend fun getCoinCourse(coinId: String): Double
 }

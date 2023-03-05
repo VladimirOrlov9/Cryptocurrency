@@ -34,6 +34,10 @@ class CurrenciesRepositoryImpl(
         ).mapCoinHistoryPointToCoinHistoryModel()
     }
 
+    override suspend fun getCoinCourse(coinId: String): Double {
+        return currenciesApiInterface.getTodayOHLCV(coinId).close
+    }
+
     private fun List<CoinHistoryPoint>.mapCoinHistoryPointToCoinHistoryModel(): List<CoinHistoryModel> {
         return this.map {
             CoinHistoryModel(
