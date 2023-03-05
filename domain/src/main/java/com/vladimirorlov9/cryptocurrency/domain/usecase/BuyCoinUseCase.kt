@@ -14,9 +14,10 @@ class BuyCoinUseCase(private val coinRepository: CoinRepository) {
             buyCoin = buyCoin,
             price = price
         )
-        val percentDifference = ((baseBalance - balance) / baseBalance).roundToInt()
+        val balanceRounded = (balance * 100).toInt() / 100.0
+        val percentDifference = ((baseBalance - balanceRounded) / baseBalance).roundToInt()
         return BalanceInfo(
-            balance = balance,
+            balance = balanceRounded,
             percentIncrease = percentDifference
         )
     }
