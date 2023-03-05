@@ -22,6 +22,9 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
  * Use the [PaymentMethodFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
+
+const val COIN_AMOUNT_SYMBOL_BUNDLE = "coin_amount_symbol"
+
 class PaymentMethodFragment : Fragment() {
 
     private var _binding: FragmentPaymentMethodBinding? = null
@@ -60,7 +63,8 @@ class PaymentMethodFragment : Fragment() {
 
         val balance = vm.balanceInfoLD.value
         if (balance != null) {
-            val availableBalanceString = "${resources.getString(R.string.available_balance)} ${balance.balance} USD"
+            val availableBalanceString =
+                "${resources.getString(R.string.available_balance)} ${balance.balance} USD"
             binding.availableWalletBalance.text = availableBalanceString
         } else {
             findNavController().popBackStack()
@@ -85,6 +89,19 @@ class PaymentMethodFragment : Fragment() {
                         serverId = coinInfo.id!!
                     ),
                     price = coinInfo.price!! * coinAmount
+                )
+
+            }
+        }
+
+        vm.paymentSuccessfulLD.observe(viewLifecycleOwner) {
+            if (it) {
+                val bundle = Bundle().apply {
+                    putString(COIN_AMOUNT_SYMBOL_BUNDLE, "$coinAmount ${coinInfo.symbol!!}")
+                }
+                findNavController().navigate(
+                    R.id.action_paymentMethodFragment_to_paymentSuccessfulFragment,
+                    bundle
                 )
             }
         }

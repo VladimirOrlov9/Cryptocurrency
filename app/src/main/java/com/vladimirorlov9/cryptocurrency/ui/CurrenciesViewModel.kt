@@ -58,6 +58,9 @@ class CurrenciesViewModel(
     private val _historyMap: MutableMap<Int, List<CoinHistoryModel>> = mutableMapOf()
     private val _coinInfoForBuy = CoinInfoForBuy()
 
+    private val _paymentSuccessfulLD = MutableLiveData(false)
+    val paymentSuccessfulLD: LiveData<Boolean> = _paymentSuccessfulLD
+
     fun getSpecStatus(specName: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val result = getSpecStatusUseCase.execute(specName)
@@ -194,6 +197,7 @@ class CurrenciesViewModel(
 
             withContext(Dispatchers.Main) {
                 _balanceInfoLD.value = newBalance
+                _paymentSuccessfulLD.value = true
             }
         }
 

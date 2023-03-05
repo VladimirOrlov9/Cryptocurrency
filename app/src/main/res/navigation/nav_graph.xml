@@ -94,5 +94,14 @@
     <fragment
         android:id="@+id/paymentMethodFragment"
         android:name="com.vladimirorlov9.cryptocurrency.ui.paymentmethod.PaymentMethodFragment"
-        tools:layout="@layout/fragment_payment_method" />
+        tools:layout="@layout/fragment_payment_method" >
+        <action
+            android:id="@+id/action_paymentMethodFragment_to_paymentSuccessfulFragment"
+            app:destination="@id/paymentSuccessfulFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/paymentSuccessfulFragment"
+        android:name="com.vladimirorlov9.cryptocurrency.ui.paymentsuccessful.PaymentSuccessfulFragment"
+        android:label="fragment_payment_successful"
+        tools:layout="@layout/fragment_payment_successful" />
 </navigation>
