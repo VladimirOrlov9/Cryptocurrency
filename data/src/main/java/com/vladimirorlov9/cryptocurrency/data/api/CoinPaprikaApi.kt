@@ -39,7 +39,8 @@ class CoinPaprikaApi(private val apiService: CoinPaprikaApiService) : Currencies
     }
 
     override suspend fun getTodayOHLCV(coinId: String): OHLCV {
-        val statList = apiService.getTodayOHLCV(coinId)
-        return statList.last()
+        val call = apiService.getTodayOHLCV(coinId)
+        val response = call.execute().body() ?: listOf()
+        return response.last()
     }
 }

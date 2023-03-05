@@ -25,9 +25,9 @@ interface CoinPaprikaApiService {
     ): Call<List<CoinHistoryPoint>>
 
     @GET("coins/{id}/ohlcv/today")
-    suspend fun getTodayOHLCV(
+    fun getTodayOHLCV(
         @Path("id") coinId: String
-    ): List<OHLCV>
+    ): Call<List<OHLCV>>
 
     companion object {
         const val BASE_URL = "https://api.coinpaprika.com/v1/"
