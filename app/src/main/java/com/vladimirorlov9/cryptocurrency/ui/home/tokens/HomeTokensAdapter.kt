@@ -16,7 +16,7 @@ import com.vladimirorlov9.cryptocurrency.utils.roundPrice
 
 
 class HomeTokensAdapter(
-    private val onClickEvent: (Int) -> Unit
+    private val onClickEvent: (String, String) -> Unit
 ) : ListAdapter<CoinInStock, HomeTokensAdapter.OverviewViewHolder>(DiffCallback()) {
 
     inner class OverviewViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -31,7 +31,8 @@ class HomeTokensAdapter(
             val data = currentList[position]
 
             coinName.text = data.coinName
-            coinPrice.text = data.coinPrice.toString()
+            val coinPriceText = "$${data.coinPrice}"
+            coinPrice.text = coinPriceText
 
             val availableCoinsText = "${data.availableCoins} ${data.coinShortName}"
             availableCoins.text = availableCoinsText
@@ -44,7 +45,7 @@ class HomeTokensAdapter(
                 .into(coinLogo)
 
             itemView.setOnClickListener {
-                onClickEvent(position)
+                onClickEvent(data.id, data.coinName)
             }
         }
 

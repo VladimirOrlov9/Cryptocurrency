@@ -6,9 +6,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.vladimirorlov9.cryptocurrency.R
 import com.vladimirorlov9.cryptocurrency.databinding.FragmentHomeTokensBinding
 import com.vladimirorlov9.cryptocurrency.ui.CurrenciesViewModel
+import com.vladimirorlov9.cryptocurrency.ui.search.BUNDLE_COIN_ID
+import com.vladimirorlov9.cryptocurrency.ui.search.BUNDLE_COIN_NAME
 import com.vladimirorlov9.cryptocurrency.ui.signup.PREF_CURRENT_UID
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -45,8 +49,12 @@ class HomeTokensFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recyclerAdapter = HomeTokensAdapter {
-            // TODO add click event
+        recyclerAdapter = HomeTokensAdapter { id, name ->
+            val bundle = Bundle().apply {
+                putString(BUNDLE_COIN_ID, id)
+                putString(BUNDLE_COIN_NAME, name)
+            }
+            findNavController().navigate(R.id.action_homeFragment_to_coinPageFragment, bundle)
         }
         binding.tokensRecycler.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
