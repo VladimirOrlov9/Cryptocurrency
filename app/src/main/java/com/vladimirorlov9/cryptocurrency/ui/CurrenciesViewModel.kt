@@ -41,8 +41,8 @@ class CurrenciesViewModel(
     private val _allCoinsLD = MutableLiveData<List<SearchCoin>>()
     val allCoinsLD: LiveData<List<SearchCoin>> = _allCoinsLD
 
-    private val _coinInfoLD = MutableLiveData<CoinScreenModel>()
-    val coinInfoLD: LiveData<CoinScreenModel> = _coinInfoLD
+    private val _coinInfoLD = MutableLiveData<CoinScreenModel?>()
+    val coinInfoLD: LiveData<CoinScreenModel?> = _coinInfoLD
 
     private val _coinHistoryLD = MutableLiveData<List<CoinHistoryModel>>()
     val coinHistoryLD: LiveData<List<CoinHistoryModel>> = _coinHistoryLD
@@ -188,6 +188,11 @@ class CurrenciesViewModel(
 
     fun resetPaymentSuccessfulLD() {
         _paymentSuccessfulLD.postValue(false)
+    }
+
+    fun clearCoinInfo() {
+        _coinInfoLD.value = null
+        _coinHistoryLD.value = listOf()
     }
 
 }

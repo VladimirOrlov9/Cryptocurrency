@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.vladimirorlov9.cryptocurrency.R
 import com.vladimirorlov9.cryptocurrency.databinding.FragmentSearchBinding
 import com.vladimirorlov9.cryptocurrency.ui.CurrenciesViewModel
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
@@ -28,7 +29,7 @@ class SearchFragment : Fragment() {
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
 
-    private val vm by viewModel<CurrenciesViewModel>()
+    private val vm by sharedViewModel<CurrenciesViewModel>()
     private lateinit var recyclerAdapter: SearchAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -79,5 +80,10 @@ class SearchFragment : Fragment() {
                 return true
             }
         })
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

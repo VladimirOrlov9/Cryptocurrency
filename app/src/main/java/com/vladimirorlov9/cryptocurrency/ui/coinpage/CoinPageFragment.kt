@@ -144,14 +144,16 @@ class CoinPageFragment : Fragment() {
     private fun setupVMObservers() {
 
         vm.coinInfoLD.observe(viewLifecycleOwner) {
-            Glide.with(this)
-                .load(it.coinInfo.logo)
-                .into(binding.coinLogo)
+            if (it != null) {
+                Glide.with(this)
+                    .load(it.coinInfo.logo)
+                    .into(binding.coinLogo)
 
-            val coinsHaveText = "${it.localAmount} ${it.coinInfo.symbol}"
-            binding.coinsHave.text = coinsHaveText
-            val currentPriceText = "$${it.coinCourse.round(2)}"
-            binding.currentPrice.text = currentPriceText
+                val coinsHaveText = "${it.localAmount} ${it.coinInfo.symbol}"
+                binding.coinsHave.text = coinsHaveText
+                val currentPriceText = "$${it.coinCourse.round(2)}"
+                binding.currentPrice.text = currentPriceText
+            }
         }
 
         vm.coinHistoryLD.observe(viewLifecycleOwner) {
@@ -177,6 +179,13 @@ class CoinPageFragment : Fragment() {
             binding.buyButton.isClickable = true
 //            binding.receiveButton.isClickable = true
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        vm.clearCoinInfo()
+        _binding = null
     }
 
 }

@@ -13,6 +13,7 @@ class CoinPaprikaApi(private val apiService: CoinPaprikaApiService) : Currencies
     override suspend fun getCoins(): List<CoinItem> {
         val call = apiService.getCoins()
         val response = call.execute()
+        println(response.message())
         return response.body() ?: listOf()
     }
 
@@ -39,7 +40,9 @@ class CoinPaprikaApi(private val apiService: CoinPaprikaApiService) : Currencies
 
     override suspend fun getTodayOHLCV(coinId: String): OHLCV {
         val call = apiService.getTodayOHLCV(coinId)
-        val response = call.execute().body() ?: listOf()
-        return response.lastOrNull() ?: getTodayOHLCV(coinId)
+        val response = call.execute()
+        println(response.isSuccessful)
+        val body = response.body() ?: listOf()
+        return body.lastOrNull() ?: getTodayOHLCV(coinId)
     }
 }
