@@ -11,8 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.vladimirorlov9.cryptocurrency.R
 import com.vladimirorlov9.cryptocurrency.domain.models.CoinInStock
-import com.vladimirorlov9.cryptocurrency.domain.models.CryptoPrice
-import com.vladimirorlov9.cryptocurrency.utils.roundPrice
 
 
 class HomeTokensAdapter(
@@ -22,22 +20,16 @@ class HomeTokensAdapter(
     inner class OverviewViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         private val coinName: TextView = itemView.findViewById(R.id.coin_name)
-        private val coinPrice: TextView = itemView.findViewById(R.id.coin_price)
         private val availableCoins: TextView = itemView.findViewById(R.id.available_coins)
-        private val convertedAvailable: TextView = itemView.findViewById(R.id.converted_available)
         private val coinLogo: ImageView = itemView.findViewById(R.id.coin_logo)
 
         fun bind(position: Int) {
             val data = currentList[position]
 
             coinName.text = data.coinName
-            val coinPriceText = "$${data.coinPrice}"
-            coinPrice.text = coinPriceText
 
             val availableCoinsText = "${data.availableCoins} ${data.coinShortName}"
             availableCoins.text = availableCoinsText
-            val convertedAvailableText = "$${data.convertedAvailable}"
-            convertedAvailable.text = convertedAvailableText
 
             Glide.with(itemView)
                 .load(data.logoUrl)
@@ -53,9 +45,7 @@ class HomeTokensAdapter(
 
     class DiffCallback : DiffUtil.ItemCallback<CoinInStock>() {
         override fun areItemsTheSame(oldItem: CoinInStock, newItem: CoinInStock): Boolean {
-            return oldItem.coinPrice == newItem.coinPrice &&
-                    oldItem.availableCoins == newItem.availableCoins &&
-                    oldItem.convertedAvailable == newItem.convertedAvailable
+            return oldItem.availableCoins == newItem.availableCoins
         }
 
         override fun areContentsTheSame(oldItem: CoinInStock, newItem: CoinInStock): Boolean =

@@ -20,7 +20,8 @@ class CurrenciesViewModel(
     private val loadHistoricalCoinDataUseCase: LoadHistoricalCoinDataUseCase,
     private val getBalanceInfoUseCase: GetBalanceInfoUseCase,
     private val buyCoinUseCase: BuyCoinUseCase,
-    private val loadStockTokensUseCase: LoadStockTokensUseCase
+    private val loadStockTokensUseCase: LoadStockTokensUseCase,
+    private val getUserOverviewUseCase: GetUserOverviewUseCase
 ) : ViewModel() {
 
     private val _resultLiveData = MutableLiveData<String>()
@@ -58,6 +59,9 @@ class CurrenciesViewModel(
 
     private val _paymentSuccessfulLD = MutableLiveData(false)
     val paymentSuccessfulLD: LiveData<Boolean> = _paymentSuccessfulLD
+
+    private val _userOverviewLD = MutableLiveData<UserOverviewModel>()
+    val userOverviewLD: LiveData<UserOverviewModel> = _userOverviewLD
 
     fun getSpecStatus(specName: String) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -193,6 +197,16 @@ class CurrenciesViewModel(
     fun clearCoinInfo() {
         _coinInfoLD.value = null
         _coinHistoryLD.value = listOf()
+    }
+
+    fun loadUserOverview(userId: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = getUserOverviewUseCase.execute(userId)
+
+            withContext(Dispatchers.Main) {
+                _userOverviewLD.value = result
+            }
+        }
     }
 
 }
