@@ -3,6 +3,8 @@ package com.vladimirorlov9.cryptocurrency.ui.user
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.graphics.Color
+import android.graphics.Rect
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,6 +13,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.vladimirorlov9.cryptocurrency.R
 import com.vladimirorlov9.cryptocurrency.databinding.FragmentUserBinding
 import com.vladimirorlov9.cryptocurrency.ui.CurrenciesViewModel
@@ -55,7 +59,14 @@ class UserFragment : Fragment() {
         binding.optionsRecycler.apply {
             layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+            val matDiv = MaterialDividerItemDecoration(context, MaterialDividerItemDecoration.VERTICAL).apply {
+                isLastItemDecorated = false
+                dividerInsetStart = 50
+                dividerInsetEnd = 50
+                dividerThickness = 2
+                dividerColor = Color.LTGRAY
+            }
+            addItemDecoration(matDiv)
             adapter = UserOptionsAdapter(userOptions) { navId ->
                 if (navId == 0) {
                     Toast.makeText(context, "No such action yet.", Toast.LENGTH_SHORT)
