@@ -6,4 +6,6 @@
     <color name="text_box_bg_solid_color">#1A888888</color>
 
     <color name="graphic_color">#7E976A</color>
+    <color name="start_dot_gradient">#A6E4FE</color>
+    <color name="end_dot_gradient">#D4FCB4</color>
 </resources>

@@ -4,16 +4,14 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.graphics.Color
-import android.graphics.Rect
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.vladimirorlov9.cryptocurrency.R
 import com.vladimirorlov9.cryptocurrency.databinding.FragmentUserBinding
@@ -81,6 +79,10 @@ class UserFragment : Fragment() {
             // TODO change label to application name
             val clip = ClipData.newPlainText("My application", id)
             clipboard.setPrimaryClip(clip)
+        }
+
+        binding.userOverviewCard.setOnClickListener {
+            findNavController().navigate(R.id.action_userFragment_to_profileFragment)
         }
 
         vm.userOverviewLD.observe(viewLifecycleOwner) { user ->
