@@ -11,6 +11,21 @@ import com.vladimirorlov9.cryptocurrency.domain.repository.UserRepository
 @Dao
 interface UsersDao: UserRepository {
 
+    override suspend fun getFullUserInfo(uid: Int): NewUser {
+        val user = getUser(uid)
+        return user.mapToNewUser()
+    }
+
+    fun NewUserEntity.mapToNewUser(): NewUser =
+        NewUser(
+            firstName = this.firstName,
+            lastName = this.lastName,
+            email = this.email,
+            phoneNumber = this.phone,
+            password = this.password,
+            registrationDate = this.registrationDate
+        )
+
     override suspend fun getUserOverviewData(userId: Int): UserOverviewModel {
         val user = getUser(userId)
 

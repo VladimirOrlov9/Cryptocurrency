@@ -10,4 +10,6 @@ interface UserRepository {
     suspend fun getBalance(userId: Long): Double
 
     suspend fun getUserOverviewData(userId: Int): UserOverviewModel
+
+    suspend fun getFullUserInfo(uid: Int): NewUser
 }

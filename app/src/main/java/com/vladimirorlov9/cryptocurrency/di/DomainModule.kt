@@ -59,4 +59,10 @@ val domainModule = module {
             userRepository = get()
         )
     }
+
+    factory<GetUserFullInfoUseCase> {
+        GetUserFullInfoUseCase(
+            userRepository = get()
+        )
+    }
 }
