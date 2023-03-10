@@ -7,13 +7,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
+import androidx.core.content.res.ResourcesCompat
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
+import com.bumptech.glide.Glide
 import com.vladimirorlov9.cryptocurrency.R
 import com.vladimirorlov9.cryptocurrency.databinding.FragmentProfileBinding
 import com.vladimirorlov9.cryptocurrency.ui.CurrenciesViewModel
 import com.vladimirorlov9.cryptocurrency.ui.signup.PREF_CURRENT_UID
+import com.vladimirorlov9.cryptocurrency.utils.convertMillisToDate
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import java.time.Instant
+import java.time.ZoneId
+import java.util.Date
 
 /**
  * A simple [Fragment] subclass.
@@ -58,12 +64,17 @@ class ProfileFragment : Fragment() {
 
     private fun setupObservers() {
         vm.userFullInfoLD.observe(viewLifecycleOwner) {
-            val nameStr = "${it.firstName} ${it.lastName}"
-            binding.nameEditText.setText(nameStr)
+            binding.firstnameEditText.setText(it.firstName)
+            binding.lastnameEditText.setText(it.lastName)
             binding.emailEditText.setText(it.email)
-            binding.tradeNameEditText.setText("")
+            binding.tradeNameEditText.setText(it.tradeName)
             binding.mobileNumberEditText.setText(it.phoneNumber)
-            binding.birthdateEditText.setText("")
+            binding.birthdateEditText.setText(convertMillisToDate(it.birthday))
+
+            Glide.with(this)
+                .load(it.image)
+                .error(ResourcesCompat.getDrawable(resources, R.drawable.baseline_person_24, null))
+                .into(binding.image)
         }
     }
 

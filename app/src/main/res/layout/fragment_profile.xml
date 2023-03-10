@@ -59,19 +59,19 @@
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <TextView
-            android:id="@+id/name_text"
+            android:id="@+id/firstname_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="19dp"
-            android:text="@string/name"
+            android:text="@string/first_name"
             android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@id/name_editText"
+            app:layout_constraintBottom_toBottomOf="@id/firstname_editText"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/name_editText" />
+            app:layout_constraintTop_toTopOf="@id/firstname_editText" />
 
         <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/name_editText"
+            android:id="@+id/firstname_editText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
@@ -79,6 +79,28 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/barrier"
             app:layout_constraintTop_toBottomOf="@id/uid_linear" />
+
+        <TextView
+            android:id="@+id/lastname_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="19dp"
+            android:text="@string/last_name"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/lastname_editText"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/lastname_editText" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/lastname_editText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="14dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/barrier"
+            app:layout_constraintTop_toBottomOf="@id/firstname_editText" />
 
         <TextView
             android:id="@+id/email_text"
@@ -100,7 +122,7 @@
             android:layout_marginTop="14dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/barrier"
-            app:layout_constraintTop_toBottomOf="@id/name_editText" />
+            app:layout_constraintTop_toBottomOf="@id/lastname_editText" />
 
         <TextView
             android:id="@+id/trade_name_text"
@@ -173,7 +195,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:barrierDirection="end"
-            app:constraint_referenced_ids="name_text,email_text,trade_name_text,mobile_number_text,birthdate_text" />
+            app:constraint_referenced_ids="firstname_editText,lastname_editText,email_text,trade_name_text,mobile_number_text,birthdate_text" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:layout_width="match_parent"
