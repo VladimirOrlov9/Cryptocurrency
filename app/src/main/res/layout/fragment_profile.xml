@@ -22,7 +22,6 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/itachi"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -195,7 +194,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:barrierDirection="end"
-            app:constraint_referenced_ids="firstname_editText,lastname_editText,email_text,trade_name_text,mobile_number_text,birthdate_text" />
+            app:constraint_referenced_ids="firstname_text,lastname_text,email_text,trade_name_text,mobile_number_text,birthdate_text" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:layout_width="match_parent"

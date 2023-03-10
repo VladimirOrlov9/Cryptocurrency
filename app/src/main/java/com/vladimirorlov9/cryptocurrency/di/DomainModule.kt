@@ -65,4 +65,10 @@ val domainModule = module {
             userRepository = get()
         )
     }
+
+    factory<UpdateUserPictureUseCase> {
+        UpdateUserPictureUseCase(
+            userRepository = get()
+        )
+    }
 }

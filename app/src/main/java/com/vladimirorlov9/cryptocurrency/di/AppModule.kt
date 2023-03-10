@@ -18,7 +18,8 @@ val appModule = module {
             buyCoinUseCase = get(),
             loadStockTokensUseCase = get(),
             getUserOverviewUseCase = get(),
-            getUserFullInfoUseCase = get()
+            getUserFullInfoUseCase = get(),
+            updateUserPictureUseCase = get()
         )
     }
 }

@@ -1,11 +1,21 @@
 package com.vladimirorlov9.cryptocurrency.ui.user.profile
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.ImageDecoder
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.res.ResourcesCompat
 import androidx.navigation.fragment.findNavController
@@ -17,9 +27,6 @@ import com.vladimirorlov9.cryptocurrency.ui.CurrenciesViewModel
 import com.vladimirorlov9.cryptocurrency.ui.signup.PREF_CURRENT_UID
 import com.vladimirorlov9.cryptocurrency.utils.convertMillisToDate
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import java.time.Instant
-import java.time.ZoneId
-import java.util.Date
 
 /**
  * A simple [Fragment] subclass.
@@ -35,6 +42,8 @@ class ProfileFragment : Fragment() {
 
     private var uid: Long = -1L
 
+    private lateinit var resultLauncherPickPhoto: ActivityResultLauncher<PickVisualMediaRequest>
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -47,7 +56,51 @@ class ProfileFragment : Fragment() {
         } else
             findNavController().popBackStack()
 
+        resultLauncherPickPhoto =
+            registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+                if (uri != null) {
+                    val bitmap = getBitmapFromUri(uri)
+                    val fileName = "image_${System.currentTimeMillis()}.jpg"
+                    saveImage(requireContext(), bitmap, fileName)
+                    registerNewImage(fileName)
+                } else {
+                    Toast.makeText(context, "Cannot update image", Toast.LENGTH_SHORT).show()
+                }
+            }
+
         return binding.root
+    }
+
+    private fun getBitmapFromUri(uri: Uri): Bitmap = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+        ImageDecoder.decodeBitmap(ImageDecoder.createSource(requireContext().contentResolver, uri))
+    } else {
+        MediaStore.Images.Media.getBitmap(requireContext().contentResolver, uri)
+    }
+
+    private fun saveImage(context: Context, bitmap: Bitmap, name: String) {
+        context.openFileOutput(name, Context.MODE_PRIVATE).use {
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, it)
+        }
+    }
+
+    private fun readImage(context: Context, name: String?): Bitmap? {
+        var bitmap: Bitmap? = null
+        try {
+            context.openFileInput(name).use {
+                bitmap = BitmapFactory.decodeStream(it)
+            }
+        } catch (ex: java.lang.Exception) {
+            println(ex)
+        }
+        return bitmap
+    }
+
+    private fun registerNewImage(localFileName: String) {
+        val bitmap = readImage(requireContext(), localFileName)
+        Glide.with(this)
+            .load(bitmap)
+            .into(binding.image)
+        vm.updateUserImage(uid.toInt(), localFileName)
     }
 
     private fun getUserId(): Long = requireActivity().getPreferences(Context.MODE_PRIVATE)
@@ -72,7 +125,7 @@ class ProfileFragment : Fragment() {
             binding.birthdateEditText.setText(convertMillisToDate(it.birthday))
 
             Glide.with(this)
-                .load(it.image)
+                .load(readImage(requireContext(), it.image))
                 .error(ResourcesCompat.getDrawable(resources, R.drawable.baseline_person_24, null))
                 .into(binding.image)
         }
@@ -88,7 +141,11 @@ class ProfileFragment : Fragment() {
                             true
                         }
                         R.id.update_image -> {
-                            // TODO open gallery for choose the new profile picture
+                            resultLauncherPickPhoto.launch(
+                                PickVisualMediaRequest(
+                                    ActivityResultContracts.PickVisualMedia.ImageOnly
+                                )
+                            )
                             true
                         }
                         else -> false

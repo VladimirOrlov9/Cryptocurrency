@@ -3,6 +3,7 @@ package com.vladimirorlov9.cryptocurrency.data.storage
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
 import com.vladimirorlov9.cryptocurrency.data.storage.models.NewUserEntity
 import com.vladimirorlov9.cryptocurrency.domain.constants.baseTradeName
 import com.vladimirorlov9.cryptocurrency.domain.models.NewUser
@@ -12,6 +13,15 @@ import com.vladimirorlov9.cryptocurrency.domain.repository.UserRepository
 
 @Dao
 interface UsersDao: UserRepository {
+
+    override suspend fun updateUserPicture(uid: Int, fileName: String) {
+        val user = getUser(uid)
+        user.image = fileName
+        updateUserInfo(user)
+    }
+
+    @Update(entity = NewUserEntity::class)
+    fun updateUserInfo(user: NewUserEntity)
 
     override suspend fun getFullUserInfo(uid: Int): UserFullInfo {
         val user = getUser(uid)
