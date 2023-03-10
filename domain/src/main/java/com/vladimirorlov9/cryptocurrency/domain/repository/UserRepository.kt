@@ -1,6 +1,7 @@
 package com.vladimirorlov9.cryptocurrency.domain.repository
 
 import com.vladimirorlov9.cryptocurrency.domain.models.NewUser
+import com.vladimirorlov9.cryptocurrency.domain.models.UserFullInfo
 import com.vladimirorlov9.cryptocurrency.domain.models.UserOverviewModel
 
 interface UserRepository {
@@ -11,5 +12,5 @@ interface UserRepository {
 
     suspend fun getUserOverviewData(userId: Int): UserOverviewModel
 
-    suspend fun getFullUserInfo(uid: Int): NewUser
+    suspend fun getFullUserInfo(uid: Int): UserFullInfo
 }

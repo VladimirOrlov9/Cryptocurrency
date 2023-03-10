@@ -4,26 +4,31 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import com.vladimirorlov9.cryptocurrency.data.storage.models.NewUserEntity
+import com.vladimirorlov9.cryptocurrency.domain.constants.baseTradeName
 import com.vladimirorlov9.cryptocurrency.domain.models.NewUser
+import com.vladimirorlov9.cryptocurrency.domain.models.UserFullInfo
 import com.vladimirorlov9.cryptocurrency.domain.models.UserOverviewModel
 import com.vladimirorlov9.cryptocurrency.domain.repository.UserRepository
 
 @Dao
 interface UsersDao: UserRepository {
 
-    override suspend fun getFullUserInfo(uid: Int): NewUser {
+    override suspend fun getFullUserInfo(uid: Int): UserFullInfo {
         val user = getUser(uid)
-        return user.mapToNewUser()
+        return user.mapToUserFullInfo()
     }
 
-    fun NewUserEntity.mapToNewUser(): NewUser =
-        NewUser(
+    fun NewUserEntity.mapToUserFullInfo(): UserFullInfo =
+        UserFullInfo(
             firstName = this.firstName,
             lastName = this.lastName,
             email = this.email,
             phoneNumber = this.phone,
             password = this.password,
-            registrationDate = this.registrationDate
+            registrationDate = this.registrationDate,
+            image = this.image,
+            tradeName = this.tradeName,
+            birthday = this.birthday
         )
 
     override suspend fun getUserOverviewData(userId: Int): UserOverviewModel {
@@ -63,7 +68,9 @@ interface UsersDao: UserRepository {
             email = user.email,
             phone = user.phoneNumber,
             password = user.password,
-            registrationDate = user.registrationDate
+            registrationDate = user.registrationDate,
+            tradeName = "${baseTradeName}_${user.registrationDate}",
+            birthday = user.registrationDate
         )
     }
 

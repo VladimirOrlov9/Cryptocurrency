@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.vladimirorlov9.cryptocurrency.domain.models.UserFullInfo
 import com.vladimirorlov9.cryptocurrency.domain.models.*
 import com.vladimirorlov9.cryptocurrency.domain.usecase.*
 import com.vladimirorlov9.cryptocurrency.utils.models.CoinInfoForBuy
@@ -64,8 +65,8 @@ class CurrenciesViewModel(
     private val _userOverviewLD = MutableLiveData<UserOverviewModel>()
     val userOverviewLD: LiveData<UserOverviewModel> = _userOverviewLD
 
-    private val _userFullInfoLD = MutableLiveData<NewUser>()
-    val userFullInfoLD: LiveData<NewUser> = _userFullInfoLD
+    private val _userFullInfoLD = MutableLiveData<UserFullInfo>()
+    val userFullInfoLD: LiveData<UserFullInfo> = _userFullInfoLD
 
     fun getSpecStatus(specName: String) {
         viewModelScope.launch(Dispatchers.IO) {
