@@ -4,5 +4,6 @@ data class UserOverviewModel(
     val firstName: String,
     val lastName: String,
     val email: String,
-    val uid: Int
+    val uid: Int,
+    val image: String?
 )

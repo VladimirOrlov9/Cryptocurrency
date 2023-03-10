@@ -41,7 +41,8 @@ interface UsersDao: UserRepository {
         firstName = this.firstName,
         lastName = this.lastName,
         email = this.email,
-        uid = this.uid
+        uid = this.uid,
+        image = this.image
     )
 
     @Query("SELECT * FROM users WHERE uid LIKE :userId LIMIT 1")

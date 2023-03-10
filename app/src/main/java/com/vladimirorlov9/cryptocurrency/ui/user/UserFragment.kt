@@ -10,8 +10,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.res.ResourcesCompat
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.vladimirorlov9.cryptocurrency.R
 import com.vladimirorlov9.cryptocurrency.databinding.FragmentUserBinding
@@ -57,7 +59,10 @@ class UserFragment : Fragment() {
         binding.optionsRecycler.apply {
             layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-            val matDiv = MaterialDividerItemDecoration(context, MaterialDividerItemDecoration.VERTICAL).apply {
+            val matDiv = MaterialDividerItemDecoration(
+                context,
+                MaterialDividerItemDecoration.VERTICAL
+            ).apply {
                 isLastItemDecorated = false
                 dividerInsetStart = 50
                 dividerInsetEnd = 50
@@ -75,7 +80,8 @@ class UserFragment : Fragment() {
 
         binding.userIdLinear.setOnClickListener {
             val id = binding.userId.text
-            val clipboard = requireActivity().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val clipboard =
+                requireActivity().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             // TODO change label to application name
             val clip = ClipData.newPlainText("My application", id)
             clipboard.setPrimaryClip(clip)
@@ -91,6 +97,11 @@ class UserFragment : Fragment() {
             val emailString = "${resources.getString(R.string.email_concat)} ${user.email}"
             binding.profileEmail.text = emailString
             binding.userId.text = user.uid.toString()
+
+            Glide.with(this)
+                .load(user.image)
+                .error(ResourcesCompat.getDrawable(resources, R.drawable.baseline_person_24, null))
+                .into(binding.profilePicture)
         }
     }
 }
