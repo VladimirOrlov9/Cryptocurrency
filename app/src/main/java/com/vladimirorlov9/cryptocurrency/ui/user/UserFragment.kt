@@ -19,6 +19,7 @@ import com.vladimirorlov9.cryptocurrency.R
 import com.vladimirorlov9.cryptocurrency.databinding.FragmentUserBinding
 import com.vladimirorlov9.cryptocurrency.ui.CurrenciesViewModel
 import com.vladimirorlov9.cryptocurrency.ui.signup.PREF_CURRENT_UID
+import com.vladimirorlov9.cryptocurrency.utils.readImage
 import com.vladimirorlov9.cryptocurrency.utils.userOptions
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
@@ -82,8 +83,7 @@ class UserFragment : Fragment() {
             val id = binding.userId.text
             val clipboard =
                 requireActivity().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-            // TODO change label to application name
-            val clip = ClipData.newPlainText("My application", id)
+            val clip = ClipData.newPlainText(resources.getString(R.string.app_name), id)
             clipboard.setPrimaryClip(clip)
         }
 
@@ -99,7 +99,7 @@ class UserFragment : Fragment() {
             binding.userId.text = user.uid.toString()
 
             Glide.with(this)
-                .load(user.image)
+                .load(readImage(requireContext(), user.image))
                 .error(ResourcesCompat.getDrawable(resources, R.drawable.baseline_person_24, null))
                 .into(binding.profilePicture)
         }
