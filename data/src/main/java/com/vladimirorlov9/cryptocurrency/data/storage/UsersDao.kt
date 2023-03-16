@@ -14,10 +14,11 @@ import com.vladimirorlov9.cryptocurrency.domain.repository.UserRepository
 @Dao
 interface UsersDao: UserRepository {
 
-    override suspend fun updateUserPicture(uid: Int, fileName: String) {
+    override suspend fun updateUserPicture(uid: Int, fileName: String): UserOverviewModel {
         val user = getUser(uid)
         user.image = fileName
         updateUserInfo(user)
+        return getUserOverviewData(uid)
     }
 
     @Update(entity = NewUserEntity::class)

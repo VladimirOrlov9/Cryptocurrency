@@ -224,7 +224,8 @@ class CurrenciesViewModel(
 
     fun updateUserImage(uid: Int, fileName: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            updateUserPictureUseCase.execute(uid, fileName)
+            val result = updateUserPictureUseCase.execute(uid, fileName)
+            _userOverviewLD.postValue(result)
         }
     }
 
