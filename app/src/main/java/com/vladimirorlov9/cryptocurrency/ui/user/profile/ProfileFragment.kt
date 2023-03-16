@@ -1,13 +1,7 @@
 package com.vladimirorlov9.cryptocurrency.ui.user.profile
 
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.ImageDecoder
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -26,6 +20,9 @@ import com.vladimirorlov9.cryptocurrency.databinding.FragmentProfileBinding
 import com.vladimirorlov9.cryptocurrency.ui.CurrenciesViewModel
 import com.vladimirorlov9.cryptocurrency.ui.signup.PREF_CURRENT_UID
 import com.vladimirorlov9.cryptocurrency.utils.convertMillisToDate
+import com.vladimirorlov9.cryptocurrency.utils.getBitmapFromUri
+import com.vladimirorlov9.cryptocurrency.utils.readImage
+import com.vladimirorlov9.cryptocurrency.utils.saveImage
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 /**
@@ -59,7 +56,7 @@ class ProfileFragment : Fragment() {
         resultLauncherPickPhoto =
             registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
                 if (uri != null) {
-                    val bitmap = getBitmapFromUri(uri)
+                    val bitmap = getBitmapFromUri(requireContext(), uri)
                     val fileName = "image_${System.currentTimeMillis()}.jpg"
                     saveImage(requireContext(), bitmap, fileName)
                     registerNewImage(fileName)
@@ -69,30 +66,6 @@ class ProfileFragment : Fragment() {
             }
 
         return binding.root
-    }
-
-    private fun getBitmapFromUri(uri: Uri): Bitmap = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-        ImageDecoder.decodeBitmap(ImageDecoder.createSource(requireContext().contentResolver, uri))
-    } else {
-        MediaStore.Images.Media.getBitmap(requireContext().contentResolver, uri)
-    }
-
-    private fun saveImage(context: Context, bitmap: Bitmap, name: String) {
-        context.openFileOutput(name, Context.MODE_PRIVATE).use {
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, it)
-        }
-    }
-
-    private fun readImage(context: Context, name: String?): Bitmap? {
-        var bitmap: Bitmap? = null
-        try {
-            context.openFileInput(name).use {
-                bitmap = BitmapFactory.decodeStream(it)
-            }
-        } catch (ex: java.lang.Exception) {
-            println(ex)
-        }
-        return bitmap
     }
 
     private fun registerNewImage(localFileName: String) {
