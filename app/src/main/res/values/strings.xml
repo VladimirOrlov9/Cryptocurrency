@@ -86,4 +86,5 @@
     <string name="open_image">Open image</string>
     <string name="update_image">Update image</string>
     <string name="second_name">Second name</string>
+    <string name="remove_image">Remove image</string>
 </resources>

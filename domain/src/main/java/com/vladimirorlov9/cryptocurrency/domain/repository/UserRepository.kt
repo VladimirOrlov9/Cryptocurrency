@@ -15,4 +15,5 @@ interface UserRepository {
     suspend fun getFullUserInfo(uid: Int): UserFullInfo
 
     suspend fun updateUserPicture(uid: Int, fileName: String): UserOverviewModel
+    suspend fun deleteProfilePicture(uid: Int): UserOverviewModel
 }

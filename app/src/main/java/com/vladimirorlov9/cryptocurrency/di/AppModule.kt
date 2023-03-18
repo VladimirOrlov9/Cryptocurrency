@@ -19,7 +19,8 @@ val appModule = module {
             loadStockTokensUseCase = get(),
             getUserOverviewUseCase = get(),
             getUserFullInfoUseCase = get(),
-            updateUserPictureUseCase = get()
+            updateUserPictureUseCase = get(),
+            deleteProfilePictureUseCase = get()
         )
     }
 }

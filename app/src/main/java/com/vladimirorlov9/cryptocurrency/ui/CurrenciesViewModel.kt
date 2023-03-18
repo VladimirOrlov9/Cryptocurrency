@@ -24,7 +24,8 @@ class CurrenciesViewModel(
     private val loadStockTokensUseCase: LoadStockTokensUseCase,
     private val getUserOverviewUseCase: GetUserOverviewUseCase,
     private val getUserFullInfoUseCase: GetUserFullInfoUseCase,
-    private val updateUserPictureUseCase: UpdateUserPictureUseCase
+    private val updateUserPictureUseCase: UpdateUserPictureUseCase,
+    private val deleteProfilePictureUseCase: DeleteProfilePictureUseCase
 ) : ViewModel() {
 
     private val _resultLiveData = MutableLiveData<String>()
@@ -225,6 +226,13 @@ class CurrenciesViewModel(
     fun updateUserImage(uid: Int, fileName: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val result = updateUserPictureUseCase.execute(uid, fileName)
+            _userOverviewLD.postValue(result)
+        }
+    }
+
+    fun deleteProfilePicture(uid: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = deleteProfilePictureUseCase.execute(uid)
             _userOverviewLD.postValue(result)
         }
     }

@@ -8,4 +8,8 @@
         android:id="@+id/update_image"
         android:icon="@drawable/baseline_home_24"
         android:title="@string/update_image" />
+    <item
+        android:id="@+id/remove_image"
+        android:icon="@drawable/baseline_home_24"
+        android:title="@string/remove_image" />
 </menu>

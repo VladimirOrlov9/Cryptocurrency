@@ -71,4 +71,10 @@ val domainModule = module {
             userRepository = get()
         )
     }
+
+    factory<DeleteProfilePictureUseCase> {
+        DeleteProfilePictureUseCase(
+            userRepository = get()
+        )
+    }
 }

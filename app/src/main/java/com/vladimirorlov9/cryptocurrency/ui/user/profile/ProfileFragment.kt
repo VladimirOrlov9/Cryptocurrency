@@ -1,6 +1,9 @@
 package com.vladimirorlov9.cryptocurrency.ui.user.profile
 
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
+import android.graphics.Bitmap
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -24,6 +27,7 @@ import com.vladimirorlov9.cryptocurrency.utils.getBitmapFromUri
 import com.vladimirorlov9.cryptocurrency.utils.readImage
 import com.vladimirorlov9.cryptocurrency.utils.saveImage
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import com.stfalcon.imageviewer.StfalconImageViewer
 
 /**
  * A simple [Fragment] subclass.
@@ -40,6 +44,7 @@ class ProfileFragment : Fragment() {
     private var uid: Long = -1L
 
     private lateinit var resultLauncherPickPhoto: ActivityResultLauncher<PickVisualMediaRequest>
+    private var profileImageBitmap: Bitmap? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -69,11 +74,13 @@ class ProfileFragment : Fragment() {
     }
 
     private fun registerNewImage(localFileName: String) {
-        val bitmap = readImage(requireContext(), localFileName)
+        profileImageBitmap = readImage(requireContext(), localFileName)
         Glide.with(this)
-            .load(bitmap)
+            .load(profileImageBitmap)
             .into(binding.image)
         vm.updateUserImage(uid.toInt(), localFileName)
+
+        setupUpdateProfilePictureButton()
     }
 
     private fun getUserId(): Long = requireActivity().getPreferences(Context.MODE_PRIVATE)
@@ -84,8 +91,18 @@ class ProfileFragment : Fragment() {
 
         binding.toolbar.setupWithNavController(findNavController())
         binding.userId.text = uid.toString()
-        setupUpdateProfilePictureButton()
         setupObservers()
+        setupListeners()
+    }
+
+    private fun setupListeners() {
+        binding.uidLinear.setOnClickListener {
+            val id = binding.userId.text
+            val clipboard =
+                requireActivity().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val clip = ClipData.newPlainText(resources.getString(R.string.app_name), id)
+            clipboard.setPrimaryClip(clip)
+        }
     }
 
     private fun setupObservers() {
@@ -97,36 +114,77 @@ class ProfileFragment : Fragment() {
             binding.mobileNumberEditText.setText(it.phoneNumber)
             binding.birthdateEditText.setText(convertMillisToDate(it.birthday))
 
-            Glide.with(this)
-                .load(readImage(requireContext(), it.image))
-                .error(ResourcesCompat.getDrawable(resources, R.drawable.baseline_person_24, null))
-                .into(binding.image)
+            profileImageBitmap = readImage(requireContext(), it.image)
+
+            setupUpdateProfilePictureButton()
         }
     }
 
     private fun setupUpdateProfilePictureButton() {
+        Glide.with(this)
+            .load(profileImageBitmap)
+            .error(ResourcesCompat.getDrawable(resources, R.drawable.baseline_person_24, null))
+            .into(binding.image)
+
         binding.image.setOnClickListener {
-            PopupMenu(it.context, it).apply {
-                setOnMenuItemClickListener { item ->
-                    when (item.itemId) {
-                        R.id.open_image -> {
-                            // TODO open fullscreen profile picture
-                            true
-                        }
-                        R.id.update_image -> {
-                            resultLauncherPickPhoto.launch(
-                                PickVisualMediaRequest(
-                                    ActivityResultContracts.PickVisualMedia.ImageOnly
+            if (profileImageBitmap != null) {
+                PopupMenu(it.context, it).apply {
+                    setOnMenuItemClickListener { item ->
+                        when (item.itemId) {
+                            R.id.open_image -> {
+                                StfalconImageViewer.Builder(requireContext(), arrayListOf(profileImageBitmap)) { view, image ->
+                                    Glide.with(this@ProfileFragment)
+                                        .load(image)
+                                        .into(view)
+                                }
+                                    .show()
+                                true
+                            }
+                            R.id.update_image -> {
+                                resultLauncherPickPhoto.launch(
+                                    PickVisualMediaRequest(
+                                        ActivityResultContracts.PickVisualMedia.ImageOnly
+                                    )
                                 )
-                            )
-                            true
+                                true
+                            }
+                            R.id.remove_image -> {
+                                // TODO remove image
+                                removeProfilePicture()
+                                true
+                            }
+                            else -> false
                         }
-                        else -> false
                     }
+                    inflate(R.menu.menu_user_image)
+                    show()
                 }
-                inflate(R.menu.menu_user_image)
-                show()
+            } else {
+                PopupMenu(it.context, it).apply {
+                    setOnMenuItemClickListener { item ->
+                        when (item.itemId) {
+                            R.id.update_image -> {
+                                resultLauncherPickPhoto.launch(
+                                    PickVisualMediaRequest(
+                                        ActivityResultContracts.PickVisualMedia.ImageOnly
+                                    )
+                                )
+                                true
+                            }
+                            else -> false
+                        }
+                    }
+                    inflate(R.menu.menu_user_update_image)
+                    show()
+                }
             }
         }
+    }
+
+    private fun removeProfilePicture() {
+        vm.deleteProfilePicture(uid.toInt())
+
+        profileImageBitmap = null
+        setupUpdateProfilePictureButton()
     }
 }

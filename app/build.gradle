@@ -57,7 +57,6 @@ dependencies {
 
     implementation 'androidx.compose.runtime:runtime-livedata:1.4.0-alpha04'
 
-
     // Koin
     def koin_version = '3.2.2'
     implementation "io.insert-koin:koin-core:$koin_version"
@@ -85,7 +84,10 @@ dependencies {
 
     def glide_version = "4.14.2"
     implementation "com.github.bumptech.glide:glide:$glide_version"
-    annotationProcessor "com.github.bumptech.glide:compiler:$glide_version"
+    kapt "com.github.bumptech.glide:compiler:$glide_version"
+
+    // Image Viewer
+    implementation 'com.github.stfalcon-studio:StfalconImageViewer:1.0.1'
 
     // Retrofit2
     def retrofit2_version = '2.9.0'

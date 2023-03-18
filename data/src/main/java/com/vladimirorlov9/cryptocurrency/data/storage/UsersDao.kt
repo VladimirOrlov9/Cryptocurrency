@@ -14,6 +14,13 @@ import com.vladimirorlov9.cryptocurrency.domain.repository.UserRepository
 @Dao
 interface UsersDao: UserRepository {
 
+    override suspend fun deleteProfilePicture(uid: Int): UserOverviewModel {
+        val user = getUser(uid)
+        user.image = null
+        updateUserInfo(user)
+        return getUserOverviewData(uid)
+    }
+
     override suspend fun updateUserPicture(uid: Int, fileName: String): UserOverviewModel {
         val user = getUser(uid)
         user.image = fileName
