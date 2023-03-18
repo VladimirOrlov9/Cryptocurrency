@@ -18,6 +18,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.Glide
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.vladimirorlov9.cryptocurrency.R
 import com.vladimirorlov9.cryptocurrency.databinding.FragmentProfileBinding
 import com.vladimirorlov9.cryptocurrency.ui.CurrenciesViewModel
@@ -124,7 +125,7 @@ class ProfileFragment : Fragment() {
             val email = binding.emailEditText.text.toString()
             val tradeName = binding.tradeNameEditText.text.toString()
             val mobileNumber = binding.mobileNumberEditText.text.toString()
-            val birthday = convertDateToMillis(binding.birthdateEditText.text.toString())
+            val birthday = convertDateToMillis(binding.birthdate.text.toString())
 
             if (ifInfoTheSame(
                     firstName = firstName,
@@ -150,6 +151,19 @@ class ProfileFragment : Fragment() {
             }
 
         }
+
+        binding.calendarButton.setOnClickListener {
+            val datePicker = MaterialDatePicker.Builder.datePicker()
+                .setTitleText("Select your birth date")
+                .setSelection(convertDateToMillis(binding.birthdate.text.toString()) + 1)
+                .build()
+
+            datePicker.addOnPositiveButtonClickListener {
+                binding.birthdate.text = convertMillisToDate(it)
+            }
+
+            datePicker.show(childFragmentManager, "Pick new birth date")
+        }
     }
 
     private fun setupObservers() {
@@ -159,7 +173,7 @@ class ProfileFragment : Fragment() {
             binding.emailEditText.setText(it.email)
             binding.tradeNameEditText.setText(it.tradeName)
             binding.mobileNumberEditText.setText(it.phoneNumber)
-            binding.birthdateEditText.setText(convertMillisToDate(it.birthday))
+            binding.birthdate.text = convertMillisToDate(it.birthday)
 
             profileImageBitmap = readImage(requireContext(), it.image)
 

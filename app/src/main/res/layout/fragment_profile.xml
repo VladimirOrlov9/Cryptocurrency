@@ -175,18 +175,28 @@
             android:text="@string/date_of_birth"
             android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@id/birthdate_editText"
+            app:layout_constraintBottom_toBottomOf="@id/birthdate"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/birthdate_editText" />
+            app:layout_constraintTop_toTopOf="@id/birthdate" />
 
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/birthdate_editText"
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/calendar_button"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="16dp"
+            android:src="@drawable/baseline_calendar_month_24"
+            app:layout_constraintBottom_toBottomOf="@id/birthdate"
+            app:layout_constraintStart_toEndOf="@id/barrier"
+            app:layout_constraintTop_toTopOf="@id/birthdate" />
+
+        <TextView
+            android:id="@+id/birthdate"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="14dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/barrier"
+            app:layout_constraintStart_toEndOf="@id/calendar_button"
             app:layout_constraintTop_toBottomOf="@id/mobile_number_editText" />
 
         <androidx.constraintlayout.widget.Barrier
@@ -206,6 +216,6 @@
             android:text="@string/update_profile"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/birthdate_editText" />
+            app:layout_constraintTop_toBottomOf="@id/birthdate" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.appcompat.widget.LinearLayoutCompat>
