@@ -20,7 +20,8 @@ val appModule = module {
             getUserOverviewUseCase = get(),
             getUserFullInfoUseCase = get(),
             updateUserPictureUseCase = get(),
-            deleteProfilePictureUseCase = get()
+            deleteProfilePictureUseCase = get(),
+            updateUserInfoUseCase = get()
         )
     }
 }

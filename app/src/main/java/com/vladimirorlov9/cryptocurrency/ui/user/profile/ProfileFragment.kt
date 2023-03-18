@@ -22,12 +22,9 @@ import com.vladimirorlov9.cryptocurrency.R
 import com.vladimirorlov9.cryptocurrency.databinding.FragmentProfileBinding
 import com.vladimirorlov9.cryptocurrency.ui.CurrenciesViewModel
 import com.vladimirorlov9.cryptocurrency.ui.signup.PREF_CURRENT_UID
-import com.vladimirorlov9.cryptocurrency.utils.convertMillisToDate
-import com.vladimirorlov9.cryptocurrency.utils.getBitmapFromUri
-import com.vladimirorlov9.cryptocurrency.utils.readImage
-import com.vladimirorlov9.cryptocurrency.utils.saveImage
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import com.stfalcon.imageviewer.StfalconImageViewer
+import com.vladimirorlov9.cryptocurrency.utils.*
 
 /**
  * A simple [Fragment] subclass.
@@ -95,6 +92,23 @@ class ProfileFragment : Fragment() {
         setupListeners()
     }
 
+    private fun ifInfoTheSame(
+        firstName: String,
+        lastName: String,
+        email: String,
+        tradeName: String,
+        phoneNumber: String,
+        birthday: Long
+    ): Boolean {
+        val prevData = vm.userFullInfoLD.value
+        return prevData?.firstName == firstName &&
+                prevData.lastName == lastName &&
+                prevData.email == email &&
+                prevData.tradeName == tradeName &&
+                prevData.phoneNumber == phoneNumber &&
+                prevData.birthday == birthday
+    }
+
     private fun setupListeners() {
         binding.uidLinear.setOnClickListener {
             val id = binding.userId.text
@@ -102,6 +116,39 @@ class ProfileFragment : Fragment() {
                 requireActivity().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             val clip = ClipData.newPlainText(resources.getString(R.string.app_name), id)
             clipboard.setPrimaryClip(clip)
+        }
+
+        binding.updateButton.setOnClickListener {
+            val firstName = binding.firstnameEditText.text.toString()
+            val lastName = binding.lastnameEditText.text.toString()
+            val email = binding.emailEditText.text.toString()
+            val tradeName = binding.tradeNameEditText.text.toString()
+            val mobileNumber = binding.mobileNumberEditText.text.toString()
+            val birthday = convertDateToMillis(binding.birthdateEditText.text.toString())
+
+            if (ifInfoTheSame(
+                    firstName = firstName,
+                    lastName = lastName,
+                    email = email,
+                    tradeName = tradeName,
+                    phoneNumber = mobileNumber,
+                    birthday = birthday
+                )
+            )
+                Toast.makeText(context, "Data the same!", Toast.LENGTH_SHORT).show()
+            else {
+                vm.updateUserInfo(
+                    uid = uid.toInt(),
+                    firstName = firstName,
+                    lastName = lastName,
+                    email = email,
+                    tradeName = tradeName,
+                    phoneNumber = mobileNumber,
+                    birthday = birthday
+                )
+                findNavController().popBackStack()
+            }
+
         }
     }
 
@@ -132,7 +179,10 @@ class ProfileFragment : Fragment() {
                     setOnMenuItemClickListener { item ->
                         when (item.itemId) {
                             R.id.open_image -> {
-                                StfalconImageViewer.Builder(requireContext(), arrayListOf(profileImageBitmap)) { view, image ->
+                                StfalconImageViewer.Builder(
+                                    requireContext(),
+                                    arrayListOf(profileImageBitmap)
+                                ) { view, image ->
                                     Glide.with(this@ProfileFragment)
                                         .load(image)
                                         .into(view)
@@ -149,7 +199,6 @@ class ProfileFragment : Fragment() {
                                 true
                             }
                             R.id.remove_image -> {
-                                // TODO remove image
                                 removeProfilePicture()
                                 true
                             }

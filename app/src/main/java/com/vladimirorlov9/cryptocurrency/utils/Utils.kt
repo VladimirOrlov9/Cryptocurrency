@@ -21,6 +21,14 @@ fun convertMillisToDate(millis: Long): String {
     return sdf.format(date)
 }
 
+fun convertDateToMillis(date: String): Long {
+    val sdf = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+    val calendar = Calendar.getInstance()
+
+    calendar.time = sdf.parse(date) ?: Date(System.currentTimeMillis())
+    return calendar.timeInMillis
+}
+
 fun saveImage(context: Context, bitmap: Bitmap, name: String) {
     context.openFileOutput(name, Context.MODE_PRIVATE).use {
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, it)

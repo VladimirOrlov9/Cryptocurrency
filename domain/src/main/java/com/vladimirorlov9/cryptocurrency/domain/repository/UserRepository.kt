@@ -16,4 +16,13 @@ interface UserRepository {
 
     suspend fun updateUserPicture(uid: Int, fileName: String): UserOverviewModel
     suspend fun deleteProfilePicture(uid: Int): UserOverviewModel
+    suspend fun updateUserInfo(
+        uid: Int,
+        firstName: String,
+        lastName: String,
+        email: String,
+        tradeName: String,
+        phoneNumber: String,
+        birthday: Long
+    ): UserOverviewModel
 }
